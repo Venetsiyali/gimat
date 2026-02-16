@@ -95,9 +95,6 @@ httpx==0.26.0
 # Environment Variables
 python-dotenv==1.0.0
 
-# CORS
-python-cors==1.0.0
-
 # WebSocket
 websockets==12.0
 
