@@ -1,231 +1,272 @@
-# 🚀 GIMAT - Railway.app Docker Deployment
+# 🚀 GIMAT - Hydrological Intelligence System
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/gimat)
+
+**Gidrologik Intellektual Monitoring va Axborot Tizimi** - Advanced hydrological monitoring with AI/ML for Uzbekistan's river basins.
 
 ---
 
-## Tez Boshlash (Quick Start)
+## 🎯 Features
 
-### 1️⃣ GitHub'ga Yuklash
+- 🌊 **Real-time Monitoring** - Discharge, water level, temperature tracking
+- 🧠 **Hybrid ML Models** - SARIMA + Bi-LSTM + Transformer + GNN ensemble
+- 📊 **Physics-Informed NN** - PINN with mass balance constraints
+- 📄 **RAG System** - Document-based Q&A with ChromaDB
+- 🎛️ **What-if DSS** - Scenario simulation for reservoir operations
+- 🌍 **Cross-border Data** - Integration with Tajikistan, Kyrgyzstan
+- ✅ **Data Quality** - Multi-source confidence scoring & anomaly detection
+- ⚡ **Edge Computing** - Real-time processing on edge devices
+
+---
+
+## 🚀 Quick Deploy to Railway
+
+### 1️⃣ Deploy Button (Easiest)
+
+Click the button above or:
 
 ```bash
-cd C:\Users\Asus\Gimat
-
-# Git setup (agar qilinmagan bo'lsa)
-git add .
-git commit -m "feat: Railway Docker deployment ready"
-git push origin main
+railway init --template https://github.com/Venetsiyali/gimat
 ```
 
-### 2️⃣ Railway'da Deploy
+### 2️⃣ From GitHub Repo
 
-#### Web Interface orqali:
+1. Go to [Railway.app](https://railway.app)
+2. Click **New Project** → **Deploy from GitHub repo**
+3. Select `Venetsiyali/gimat`
+4. Railway automatically detects `Dockerfile` ✓
 
-1. [Railway.app](https://railway.app) ga kirish
-2. **"New Project"** → **"Deploy from GitHub repo"**
-3. `Venetsiyali/gimat` repozitoriyasini tanlash
-4. Dockerfile avtomatik topiladi ✓
-
-#### CLI orqali:
+### 3️⃣ CLI Deployment
 
 ```bash
-# Railway CLI o'rnatish
+# Install Railway CLI
 npm install -g @railway/cli
 
 # Login
 railway login
 
-# Initialize va deploy
+# Clone and deploy
+git clone https://github.com/Venetsiyali/gimat.git
+cd gimat
 railway init
 railway up
 ```
 
-### 3️⃣ Database Sozlash
+---
 
-Railway Dashboard → Add Service:
+## 📦 Railway Services Setup
 
-**PostgreSQL** (TimescaleDB o'rniga):
-```
+### Required Services
+
+| Service | Type | Purpose |
+|---------|------|---------|
+| **Backend** | Dockerfile | FastAPI application |
+| **PostgreSQL** | Plugin | TimescaleDB (time-series data) |
+| **Redis** | Plugin | Caching & message queue |
+| **Neo4j** | Docker | Graph database (river network) |
+
+### Add Services
+
+```bash
+# PostgreSQL (auto-provides DATABASE_URL)
 railway add postgres
-```
 
-**Redis**:
-```
+# Redis (auto-provides REDIS_URL)
 railway add redis
+
+# Neo4j (custom Docker image)
+railway add
+# Then: Docker Image → neo4j:5.15-community
 ```
 
-**Neo4j** (Dockerhub orqali):
-```
-Service → Docker Image → neo4j:5.15-community
-```
+---
 
-Environment variables:
-```
-NEO4J_AUTH=neo4j/your_password
-```
+## ⚙️ Environment Variables
 
-### 4️⃣ Environment Variables
+### Auto-Provided by Railway
+
+| Variable | Service | Auto-Set |
+|----------|---------|----------|
+| `DATABASE_URL` | PostgreSQL | ✅ |
+| `REDIS_URL` | Redis | ✅ |
+| `PORT` | Backend | ✅ |
+
+### Required Manual Setup
 
 Railway Dashboard → Variables:
 
-```bash
-# Auto-provided by Railway
-DATABASE_URL=postgresql://...  # PostgreSQL
-REDIS_URL=redis://...          # Redis
+| Variable | Value | Description |
+|----------|-------|-------------|
+| `NEO4J_URI` | `bolt://neo4j.railway.internal:7687` | Neo4j connection |
+| `NEO4J_USER` | `neo4j` | Neo4j username |
+| `NEO4J_PASSWORD` | `your_secure_password` | Neo4j password |
+| `OPENAI_API_KEY` | `sk-xxxxx` | OpenAI API for RAG |
+| `ENVIRONMENT` | `production` | App environment |
+| `LOG_LEVEL` | `info` | Logging level |
 
-# Qo'lda qo'shish kerak
-NEO4J_URI=bolt://neo4j.railway.internal:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=your_password
-OPENAI_API_KEY=sk-xxxxx
-ENVIRONMENT=production
+### Optional Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ALLOWED_ORIGINS` | `*` | CORS origins |
+| `SECRET_KEY` | auto-generated | JWT secret |
+| `ML_MODEL_PATH` | `/app/models` | Model storage path |
+
+---
+
+## 🗄️ Database Initialization
+
+After deployment, databases auto-initialize via `backend/database/init_railway.py`:
+
+**TimescaleDB**:
+- ✅ Hypertables for `observations` and `predictions`
+- ✅ Compression (7-day policy)
+- ✅ Indexes for fast queries
+
+**Neo4j**:
+- ✅ Constraints (unique station IDs)
+- ✅ Indexes (station/river names)
+- ✅ Sample Chirchiq basin data
+
+**Manual initialization** (if needed):
+```bash
+railway run python backend/database/init_railway.py
 ```
 
 ---
 
-## Loyiha Strukturasi
+## 💰 Cost Optimization
+
+### Free Tier Strategy
+- ✅ $5 free credit
+- ✅ 500 hours/month
+- ⚠️ Services sleep after 30min inactivity
+
+### Resource Limits (in `railway.json`)
+
+```json
+{
+  "resources": {
+    "memory": "2GB",    // Sufficient for GIMAT
+    "cpu": "1"          // Single CPU core
+  }
+}
+```
+
+### Cost-Saving Tips
+
+1. **Use 1 Worker** - `--workers 1` in uvicorn
+2. **Enable Sleep** - Railway auto-sleeps inactive services
+3. **Compression** - TimescaleDB data compression enabled
+4. **Lazy Loading** - ML models load on-demand
+5. **Minimal Data** - Keep only essential time-series
+
+### Estimated Monthly Cost
+
+| Plan | Services | Cost |
+|------|----------|------|
+| **Free** | All (with sleep) | $0 (using $5 credit) |
+| **Hobby** | Backend + 3 DBs | $15-20/mo |
+| **Pro** | High availability | $50+/mo |
+
+**GIMAT Recommendation**: Hobby tier ($5/mo base) → ~$15-20/mo total
+
+---
+
+## 🏗️ Architecture
 
 ```
-gimat/
-├── Dockerfile              # Production build
-├── docker-compose.yml      # Local development
-├── railway.json           # Railway config
-├── .env.railway           # Environment template
-├── backend/
-│   ├── main.py            # FastAPI app
-│   ├── database/
-│   │   └── railway_db.py  # Railway DB manager
-│   ├── models/            # ML models
-│   ├── rag/               # RAG module
-│   └── requirements.txt
-└── frontend/
-    └── src/
+┌─────────────────────────────────────────┐
+│           Railway Platform              │
+│                                         │
+│  ┌──────────┐  ┌──────────────────┐    │
+│  │ Backend  │──│ PostgreSQL       │    │
+│  │ (Docker) │  │ (TimescaleDB)    │    │
+│  │          │  └──────────────────┘    │
+│  │  Port:   │                          │
+│  │  $PORT   │  ┌──────────────────┐    │
+│  │          │──│ Neo4j (Docker)   │    │
+│  │          │  │ bolt://7687      │    │
+│  │          │  └──────────────────┘    │
+│  │          │                          │
+│  │          │  ┌──────────────────┐    │
+│  │          │──│ Redis (Plugin)   │    │
+│  └──────────┘  └──────────────────┘    │
+│                                         │
+│  Internal: *.railway.internal           │
+└─────────────────────────────────────────┘
+         │
+         │ HTTPS (Auto SSL)
+         ▼
+    Internet
 ```
 
 ---
 
-## Local Development
+## 📡 API Endpoints
+
+Once deployed, access via `https://your-project.up.railway.app`:
+
+### Core APIs
+- `GET /health` - Health check
+- `GET /api/data/stations` - List monitoring stations
+- `GET /api/data/stations/{id}/latest` - Latest observation
+- `POST /api/predictions/forecast` - Generate forecast
+
+### Advanced Features
+- `POST /api/rag/query` - RAG document Q&A
+- `POST /api/dss/simulate` - Scenario simulation
+- `POST /api/quality/confidence` - Data confidence score
+- `GET /api/ontology/network` - River network topology
+
+**Swagger Docs**: `https://your-project.up.railway.app/docs`
+
+---
+
+## 🧪 Testing
+
+### Local Development
 
 ```bash
-# Docker Compose bilan
+# Docker Compose
 docker-compose up
 
-# Faqat backend
-docker-compose up backend
-
-# View logs
-docker-compose logs -f backend
+# Access
+Backend: http://localhost:8000
+Neo4j: http://localhost:7474
 ```
 
-**URL'lar**:
-- Backend: http://localhost:8000
-- Frontend: http://localhost:3000
-- Neo4j Browser: http://localhost:7474
-- Swagger Docs: http://localhost:8000/docs
-
----
-
-## Railway Commands
+### Railway Testing
 
 ```bash
-# Logs
+# View logs
 railway logs
-
-# Environment variables
-railway variables
 
 # Connect to database
 railway run psql
 
-# Restart service
-railway restart
-
-# Remove project
-railway delete
+# Run commands
+railway run python backend/database/init_railway.py
 ```
 
 ---
 
-## Production Checklist
+## 📊 Scientific Background
 
-- [x] Dockerfile created
-- [x] docker-compose.yml configured
-- [x] Railway database manager
-- [x] Environment variables template
-- [x] Health check endpoint
-- [ ] Custom domain setup
-- [ ] SSL/TLS (auto via Railway)
-- [ ] Monitoring setup
-- [ ] Backup strategy
+**PhD Thesis (05.01.10 - Hydraulic Engineering)**:
+- Hybrid ML ensemble (SARIMA + LSTM + Transformer + GNN)
+- Physics-informed constraints (mass balance, continuity)
+- Knowledge graph for river basin ontology
+- RAG for normative document integration
+- Multi-source data quality assessment
 
----
-
-## Database Migrations
-
-### TimescaleDB (PostgreSQL)
-
-```bash
-# Railway shell
-railway run bash
-
-# Run migrations
-python -c "from database.railway_db import db_manager; import asyncio; asyncio.run(db_manager.connect_timescale())"
-```
-
-### Neo4j
-
-```bash
-# Railway Neo4j service
-# Upload init script via Railway dashboard
-# Or run via Cypher shell
-```
+**Basins**: Chirchiq, Zarafshon (Uzbekistan)
 
 ---
 
-## Monitoring
+## 🔧 Troubleshooting
 
-Railway provides:
-- ✅ Automatic metrics
-- ✅ Log aggregation
-- ✅ Health checks
-- ✅ Alerts
-
-Custom monitoring:
-```python
-# backend/monitoring.py
-from prometheus_client import Counter, Histogram
-
-request_count = Counter('requests_total', 'Total requests')
-request_duration = Histogram('request_duration_seconds', 'Request duration')
-```
-
----
-
-## Cost Estimation
-
-**Free Tier**:
-- 500 hours/month
-- $5 credit
-
-**Hobby Tier** ($5/month):
-- Unlimited hours
-- 8GB memory
-- 8 CPU cores
-
-**GIMAT tahmini**:
-- Backend: ~$5-10/month
-- PostgreSQL: $5/month
-- Neo4j: $10/month (custom Docker)
-- Redis: Free (included)
-
-**Total**: ~$20-25/month
-
----
-
-## Troubleshooting
-
-### Build fails
-
+### Build Fails
 ```bash
 # Check logs
 railway logs --deployment
@@ -234,86 +275,97 @@ railway logs --deployment
 railway up --detach
 ```
 
-### Database connection error
-
+### Database Connection Error
 ```bash
-# Verify environment variables
+# Verify variables
 railway variables
 
 # Check service status
 railway status
 ```
 
-### Out of memory
+### Out of Memory
+- Railway Dashboard → Settings → Increase memory
+- Or optimize: lazy loading, reduce workers
+
+---
+
+## 📝 Development
+
+### Local Setup
+
+```bash
+# Clone
+git clone https://github.com/Venetsiyali/gimat.git
+cd gimat
+
+# Backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r backend/requirements.txt
+
+# Frontend
+cd frontend
+npm install
+npm start
+```
+
+### Project Structure
 
 ```
-# Railway dashboard → Settings → Change plan
+gimat/
+├── backend/
+│   ├── main.py              # FastAPI app
+│   ├── api/                 # API endpoints
+│   ├── models/              # ML models
+│   ├── rag/                 # RAG module
+│   ├── quality/             # Data quality
+│   ├── dss/                 # Decision support
+│   └── database/            # DB managers
+├── frontend/                # React app
+├── Dockerfile               # Production build
+├── docker-compose.yml       # Local dev
+└── railway.json             # Railway config
 ```
 
 ---
 
-## Custom Domain
+## 📚 Documentation
 
-Railway Dashboard → Settings → Domains:
+- [Deployment Plan](./DEPLOYMENT.md)
+- [Enhancement Plan](./docs/enhancement_plan.md)
+- [API Documentation](https://your-project.up.railway.app/docs)
 
-```
-gimat.uz → Custom domain
-api.gimat.uz → Railway URL
-```
+---
 
-DNS settings:
-```
-CNAME  api  your-project.up.railway.app
+## 🤝 Contributing
+
+For research collaboration or contributions, open an issue or PR.
+
+---
+
+## 📄 License
+
+Research project - Tashkent Institute of Irrigation and Agricultural Mechanization Engineers (TIIAME)
+
+---
+
+## 🎓 Citation
+
+```bibtex
+@phdthesis{gimat2024,
+  title={Hybrid Machine Learning Approach for River Discharge Forecasting with Physics-Informed Constraints},
+  author={[Your Name]},
+  year={2024},
+  school={TIIAME},
+  type={PhD Thesis (05.01.10)}
+}
 ```
 
 ---
 
-## GitHub Actions (Auto-deploy)
+**Deploy Time**: ~5 minutes ⚡  
+**Auto-Scaling**: ✅  
+**SSL Certificate**: Auto (Let's Encrypt) ✅
 
-`.github/workflows/railway-deploy.yml`:
-
-```yaml
-name: Deploy to Railway
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Deploy to Railway
-        uses: railway/railway-action@v1
-        with:
-          token: ${{ secrets.RAILWAY_TOKEN }}
-```
-
-Secrets qo'shish:
-- GitHub → Settings → Secrets → `RAILWAY_TOKEN`
-
----
-
-## Next Steps
-
-1. **Deploy qiling** Railway'ga
-2. **Test qiling** API endpoints
-3. **Database'ni to'ldiring** initial data bilan
-4. **Frontend'ni Deploy qiling** (Railway yoki Vercel)
-5. **Custom domain sozlang**
-
----
-
-## Support
-
-- 📖 [Railway Docs](https://docs.railway.app)
-- 💬 [Railway Discord](https://discord.gg/railway)
-- 🐛 Issues: GitHub Issues
-
----
-
-**Deploy vaqti**: ~5 daqiqa ⚡  
-**Автоматик масштаблаш**: ✅  
-**SSL сертификати**: Auto ✅
+**Start monitoring Uzbekistan's rivers with AI!** 🌊🤖

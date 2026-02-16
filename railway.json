@@ -5,13 +5,15 @@
         "dockerfilePath": "Dockerfile"
     },
     "deploy": {
-        "startCommand": "uvicorn backend.main:app --host 0.0.0.0 --port $PORT --workers 2",
+        "startCommand": "python backend/database/init_railway.py && uvicorn backend.main:app --host 0.0.0.0 --port $PORT --workers 1",
         "restartPolicyType": "ON_FAILURE",
-        "restartPolicyMaxRetries": 3
+        "restartPolicyMaxRetries": 3,
+        "healthcheckPath": "/health",
+        "healthcheckTimeout": 100
     },
-    "healthcheck": {
-        "path": "/health",
-        "timeout": 100
+    "resources": {
+        "memory": "2GB",
+        "cpu": "1"
     },
     "regions": [
         "us-west1"

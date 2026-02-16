@@ -1,38 +1,46 @@
 # ======================================
-# Multi-stage Dockerfile for GIMAT
-# Optimized for Railway.app deployment
+# Optimized Production Dockerfile for GIMAT
+# Railway.app deployment
+# Python 3.10-slim base
 # ======================================
 
-FROM python:3.11-slim as base
+FROM python:3.10-slim as base
 
-# Set environment variables
+# Metadata
+LABEL maintainer="GIMAT Team"
+LABEL description="Gidrologik Intellektual Monitoring va Axborot Tizimi"
+
+# Environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (minimal)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
-    git \
     libpq-dev \
     postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+    git \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 WORKDIR /app
 
 # ======================================
-# Dependencies stage
+# Dependencies stage (cached layer)
 # ======================================
 FROM base as dependencies
 
-# Copy requirements
+# Copy only requirements first (for better caching)
 COPY backend/requirements.txt .
 
 # Install Python dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Use --no-cache-dir to reduce image size
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
 # ======================================
 # Production stage
@@ -40,21 +48,26 @@ RUN pip install --upgrade pip && \
 FROM base as production
 
 # Copy installed packages from dependencies stage
-COPY --from=dependencies /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=dependencies /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 COPY --from=dependencies /usr/local/bin /usr/local/bin
 
+# Create app user (security best practice)
+RUN useradd -m -u 1000 gimat && \
+    mkdir -p /app/logs /app/data /app/cache && \
+    chown -R gimat:gimat /app
+
 # Copy application code
-COPY backend/ /app/backend/
+COPY --chown=gimat:gimat backend/ /app/backend/
 
-# Create necessary directories
-RUN mkdir -p /app/logs /app/data
+# Switch to non-root user
+USER gimat
 
-# Expose port (Railway uses PORT env variable)
+# Expose port
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# Run application
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+# Start application
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--log-level", "info"]
