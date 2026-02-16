@@ -1,0 +1,94 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# PyTorch
+*.pth
+*.pt
+checkpoints/
+runs/
+logs/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node.js (Frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+/frontend/build
+/frontend/dist
+/frontend/.next
+/frontend/out
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Neo4j
+neo4j_data/
+
+# Logs
+*.log
+
+# Data files (optional - uncomment if you want to ignore data)
+# data/
+# *.csv
+# *.json
+
+# ML Models (large files)
+*.h5
+*.pkl
+*.pickle
+
+# Temporary files
+tmp/
+temp/
+*.tmp

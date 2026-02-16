@@ -1,0 +1,6 @@
+.network-viz-container {
+    min-height: 400px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px dashed #cbd5e1;
+}

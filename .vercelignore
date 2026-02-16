@@ -1,0 +1,34 @@
+# Development
+tests/
+docs/
+README.md
+*.md
+
+# Heavy models & data
+ml_models/
+*.pt
+*.pth
+*.onnx
+*.h5
+data/
+chroma_db/
+vector_db/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# Logs
+*.log
+logs/
