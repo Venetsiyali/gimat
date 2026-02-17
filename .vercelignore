@@ -5,6 +5,7 @@ README.md
 *.md
 
 # Backend (deployed on Railway, not needed for Vercel)
+# This prevents OOM errors from installing heavy ML dependencies
 api/
 backend/
 
