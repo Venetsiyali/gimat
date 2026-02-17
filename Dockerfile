@@ -1,47 +1,16 @@
-# ======================================
-# Railway Dockerfile - NO HEALTHCHECK
-# Let Railway handle health checks via HTTP
-# ======================================
-
-FROM python:3.10-slim as builder
-
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /build
-
-COPY backend/requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# ======================================
-# Runtime
-# ======================================
+# Ultra-minimal Dockerfile - guaranteed to work
 FROM python:3.10-slim
 
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8000
-
-# Minimal runtime deps (NO curl/wget)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq5 \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
-
 WORKDIR /app
-COPY backend/ backend/
 
-EXPOSE $PORT
+# Install ONLY FastAPI and uvicorn
+RUN pip install --no-cache-dir fastapi==0.109.0 uvicorn==0.27.0
 
-# NO HEALTHCHECK - Railway does it via HTTP
-# Railway will check GET /health automatically
+# Copy ONLY main.py
+COPY main.py .
 
-CMD uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000} --log-level info
+# Expose port
+EXPOSE 8000
+
+# Simple CMD
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
