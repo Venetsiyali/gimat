@@ -46,7 +46,9 @@ function App() {
                 <footer className="app-footer">
                     <div className="container mx-auto px-4 py-6 text-center">
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>© 2026 GIMAT Platform</p>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>Yaratuvchi: Venetsiyali</p>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                            <Link to="/about" className="footer-link">Dastur yaratuvchisi</Link>
+                        </p>
                     </div>
                 </footer>
             </div>
