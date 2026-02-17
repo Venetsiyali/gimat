@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ontology API } from '../services/api';
+import { ontologyAPI } from '../services/api';
 import './NetworkView.css';
 
 const NetworkView: React.FC = () => {
