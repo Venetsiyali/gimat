@@ -9,6 +9,7 @@ const NetworkView: React.FC = () => {
 
     useEffect(() => {
         loadNetwork();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRiver]);
 
     const loadNetwork = async () => {

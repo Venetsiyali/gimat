@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { dataAPI, ontologyAPI } from '../services/api';
+import { dataAPI } from '../services/api';
 import './Dashboard.css';
 
 interface Station {
@@ -33,6 +33,7 @@ const Dashboard: React.FC = () => {
             loadLatestData();
             loadStatistics();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedStation]);
 
     const loadStations = async () => {

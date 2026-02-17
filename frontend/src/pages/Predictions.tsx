@@ -27,6 +27,7 @@ const Predictions: React.FC = () => {
         if (selectedStation && selectedModel) {
             loadEvaluation();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedStation, selectedModel]);
 
     const loadInitialData = async () => {
