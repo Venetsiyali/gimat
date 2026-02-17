@@ -1,0 +1,68 @@
+# Exclude everything not needed for production
+
+# Development files
+*.md
+!README.md
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Python
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.egg-info
+.pytest_cache
+.coverage
+
+# Frontend (not needed in backend image)
+frontend/node_modules
+frontend/build
+frontend/src
+frontend/public
+frontend/package.json
+frontend/tsconfig.json
+frontend/.env*
+
+# Data & Models (too large)
+data/
+models/*.pt
+models/*.pth
+models/*.h5
+*.onnx
+
+# Databases (local only)
+*.db
+*.sqlite
+chroma_db/
+
+# Environment
+.env
+.env.*
+!.env.railway
+
+# Documentation
+docs/
+examples/
+tests/
+
+# Deployment configs for other platforms
+vercel.json
+docker-compose.yml
+.vercelignore
+
+# Large dependencies source
+backend/scrapers/
+backend/edge/
+backend/dss/
+backend/quality/
+backend/pinn/
+
+# Keep only essential backend
+# backend/main.py ✓
+# backend/api/ ✓
+# backend/database/ ✓
+# backend/models/ (minimal) ✓
+# backend/rag/ ✓

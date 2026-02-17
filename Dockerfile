@@ -1,55 +1,64 @@
 # ======================================
-# Optimized Railway Dockerfile
-# Fast build (~2-3 minutes)
+# Ultra-lightweight Railway Dockerfile
+# Target size: <1GB (Railway limit: 4GB)
 # ======================================
 
-FROM python:3.10-slim as base
+FROM python:3.10-slim as builder
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Minimal system dependencies
+# Install minimal build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
+    gcc \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /build
+
+# Install dependencies
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# ======================================
+# Final ultra-slim image
+# ======================================
+FROM python:3.10-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+# Install ONLY runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq5 \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean \
+    && rm -rf /tmp/* /var/tmp/*
+
+# Copy ONLY installed packages (not build tools)
+COPY --from=builder /root/.local /root/.local
+
+# Create minimal app structure
 WORKDIR /app
 
-# ======================================
-# Dependencies stage
-# ======================================
-FROM base as dependencies
+# Copy ONLY necessary Python files
+COPY --chown=nobody:nogroup backend/main.py backend/
+COPY --chown=nobody:nogroup backend/api backend/api/
+COPY --chown=nobody:nogroup backend/database backend/database/
+COPY --chown=nobody:nogroup backend/models backend/models/
+COPY --chown=nobody:nogroup backend/rag backend/rag/
 
-COPY backend/requirements.txt .
-
-# Install with timeout optimization
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir --timeout 1000 -r requirements.txt
-
-# ======================================
-# Production stage
-# ======================================
-FROM base as production
-
-COPY --from=dependencies /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
-COPY --from=dependencies /usr/local/bin /usr/local/bin
-
-# Create non-root user
-RUN useradd -m -u 1000 gimat && \
-    mkdir -p /app/logs /app/data && \
-    chown -R gimat:gimat /app
-
-COPY --chown=gimat:gimat backend/ /app/backend/
-
-USER gimat
+# Non-root user
+USER nobody
 
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+# Simple health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# Single worker for cost efficiency
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Start with minimal resources
+CMD ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
