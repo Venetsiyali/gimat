@@ -1,4 +1,4 @@
-/* Dark Mode About Page with Glassmorphism */
+/* Water & Trust Palette - About Page (Cognitive Load Optimized) */
 
 .about-container-dark {
     max-width: 1200px;
@@ -18,11 +18,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(100, 255, 218, 0.1) 0%, transparent 70%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
     pointer-events: none;
-    animation: pulse 3s ease-in-out infinite;
+    animation: pulse 4s ease-in-out infinite;
 }
 
 .about-title-dark {
@@ -33,11 +33,12 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    color: var(--text-primary);
 }
 
 .title-icon {
     font-size: 4rem;
-    filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.5));
+    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.5));
 }
 
 .about-subtitle-dark {
@@ -49,9 +50,10 @@
 .neon-divider {
     width: 150px;
     height: 3px;
-    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    background: linear-gradient(90deg, transparent, var(--sky-blue), var(--teal-water), transparent);
     margin: 2rem auto;
-    box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    border-radius: 2px;
 }
 
 .about-content-dark {
@@ -60,10 +62,11 @@
     gap: 2.5rem;
 }
 
-/* Creator Main Card */
+/* Creator Main Card - yumshoq burchaklar */
 .creator-main-card {
-    background: linear-gradient(135deg, var(--glass-bg), rgba(100, 255, 218, 0.05));
+    background: linear-gradient(135deg, var(--glass-bg), rgba(56, 189, 248, 0.05));
     padding: 3rem;
+    border-radius: var(--radius-xl);
 }
 
 .creator-header {
@@ -79,12 +82,12 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+    background: linear-gradient(135deg, var(--sky-blue), var(--teal-water));
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 4rem;
-    box-shadow: 0 0 40px rgba(100, 255, 218, 0.5);
+    box-shadow: 0 0 40px rgba(56, 189, 248, 0.5);
     position: relative;
 }
 
@@ -100,6 +103,7 @@
     font-size: 2.5rem;
     font-weight: 800;
     margin-bottom: 0.75rem;
+    color: var(--text-primary);
 }
 
 .creator-position {
@@ -119,16 +123,17 @@
     align-items: flex-start;
     gap: 1.25rem;
     padding: 1.5rem;
-    background: rgba(100, 255, 218, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(100, 255, 218, 0.1);
+    background: rgba(56, 189, 248, 0.03);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(56, 189, 248, 0.1);
     transition: all 0.3s;
 }
 
 .detail-item:hover {
-    background: rgba(100, 255, 218, 0.06);
-    border-color: var(--neon-cyan);
+    background: rgba(56, 189, 248, 0.06);
+    border-color: var(--sky-blue);
     transform: translateX(8px);
+    box-shadow: var(--shadow-md);
 }
 
 .detail-icon {
@@ -137,7 +142,7 @@
 }
 
 .detail-item strong {
-    color: var(--neon-cyan);
+    color: var(--sky-blue);
     display: block;
     margin-bottom: 0.5rem;
     font-size: 0.95rem;
@@ -180,6 +185,7 @@
     line-height: 1.5;
     margin-bottom: 2.5rem;
     text-align: center;
+    color: var(--text-primary);
 }
 
 .research-objectives {
@@ -189,7 +195,7 @@
 .objectives-title {
     font-size: 1.375rem;
     font-weight: 700;
-    color: var(--neon-cyan);
+    color: var(--sky-blue);
     margin-bottom: 2rem;
     text-align: center;
 }
@@ -204,23 +210,23 @@
     display: flex;
     gap: 1.25rem;
     padding: 1.75rem;
-    background: rgba(100, 255, 218, 0.03);
-    border-radius: 16px;
-    border: 1px solid rgba(100, 255, 218, 0.1);
+    background: rgba(56, 189, 248, 0.03);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(56, 189, 248, 0.1);
     transition: all 0.4s;
 }
 
 .objective-item:hover {
-    background: rgba(100, 255, 218, 0.06);
-    border-color: var(--neon-cyan);
+    background: rgba(56, 189, 248, 0.06);
+    border-color: var(--sky-blue);
     transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(100, 255, 218, 0.2);
+    box-shadow: var(--shadow-lg);
 }
 
 .objective-number {
     font-size: 2.5rem;
     font-weight: 900;
-    color: var(--neon-cyan);
+    color: var(--sky-blue);
     opacity: 0.3;
     font-family: 'Roboto Mono', monospace;
 }
@@ -247,23 +253,24 @@
 
 .achievement-card {
     padding: 2rem 1.5rem;
-    background: rgba(100, 255, 218, 0.03);
-    border-radius: 16px;
-    border: 1px solid rgba(100, 255, 218, 0.1);
+    background: rgba(56, 189, 248, 0.03);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(56, 189, 248, 0.1);
     text-align: center;
     transition: all 0.3s;
 }
 
 .achievement-card:hover {
-    background: rgba(100, 255, 218, 0.06);
-    border-color: var(--neon-cyan);
+    background: rgba(56, 189, 248, 0.06);
+    border-color: var(--sky-blue);
     transform: scale(1.05);
+    box-shadow: var(--shadow-wave);
 }
 
 .achievement-badge {
     font-size: 3rem;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 10px rgba(100, 255, 218, 0.3));
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.3));
 }
 
 .achievement-card h4 {
@@ -288,15 +295,15 @@
 
 .tech-category-dark {
     padding: 1.75rem;
-    background: rgba(100, 255, 218, 0.02);
-    border-radius: 14px;
-    border: 1px solid rgba(100, 255, 218, 0.08);
+    background: rgba(56, 189, 248, 0.02);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(56, 189, 248, 0.08);
 }
 
 .tech-category-dark h4 {
     font-size: 1.125rem;
     font-weight: 700;
-    color: var(--neon-cyan);
+    color: var(--sky-blue);
     margin-bottom: 1.25rem;
 }
 
@@ -310,7 +317,7 @@
     padding: 0.625rem 1.125rem;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-primary);
@@ -320,16 +327,17 @@
 }
 
 .tech-tag-dark:hover {
-    background: var(--neon-cyan);
-    color: var(--primary-dark);
+    background: var(--sky-blue);
+    color: var(--deep-navy);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(100, 255, 218, 0.4);
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
 }
 
 /* Mission Card */
 .mission-card {
-    background: linear-gradient(135deg, var(--glass-bg), rgba(0, 212, 255, 0.05));
+    background: linear-gradient(135deg, var(--glass-bg), rgba(45, 212, 191, 0.05));
     padding: 3rem;
+    border-radius: var(--radius-xl);
 }
 
 .mission-content h3 {
@@ -337,6 +345,7 @@
     font-weight: 800;
     margin-bottom: 1.5rem;
     text-align: center;
+    color: var(--text-primary);
 }
 
 .mission-text {
@@ -356,9 +365,9 @@
 .stat-item {
     text-align: center;
     padding: 1.5rem;
-    background: rgba(100, 255, 218, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(100, 255, 218, 0.1);
+    background: rgba(56, 189, 248, 0.03);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(56, 189, 248, 0.1);
 }
 
 .stat-value {
@@ -367,6 +376,7 @@
     font-weight: 900;
     margin-bottom: 0.5rem;
     font-family: 'Roboto Mono', monospace;
+    color: var(--text-primary);
 }
 
 .stat-label {
@@ -377,7 +387,8 @@
 
 /* Contact */
 .contact-card-dark {
-    background: linear-gradient(135deg, var(--glass-bg), rgba(0, 255, 136, 0.03));
+    background: linear-gradient(135deg, var(--glass-bg), rgba(16, 185, 129, 0.03));
+    border-radius: var(--radius-xl);
 }
 
 .contact-links {
@@ -391,26 +402,34 @@
     align-items: center;
     gap: 1rem;
     padding: 1.25rem 2rem;
-    background: rgba(100, 255, 218, 0.08);
-    border: 2px solid var(--neon-cyan);
-    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.08);
+    border: 2px solid var(--sky-blue);
+    border-radius: var(--radius-md);
     color: var(--text-primary);
     text-decoration: none;
     font-weight: 600;
     font-size: 1.05rem;
     transition: all 0.3s;
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+    box-shadow: var(--shadow-md);
 }
 
 .contact-link-dark:hover {
-    background: var(--neon-cyan);
-    color: var(--primary-dark);
+    background: var(--sky-blue);
+    color: var(--deep-navy);
     transform: translateX(10px);
-    box-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
 }
 
 .link-icon {
     font-size: 1.75rem;
+}
+
+/* Water border variant */
+.water-border {
+    border: 2px solid var(--sky-blue);
+    box-shadow:
+        0 0 15px rgba(56, 189, 248, 0.4),
+        inset 0 0 15px rgba(56, 189, 248, 0.15);
 }
 
 /* Responsive */

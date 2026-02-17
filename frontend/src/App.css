@@ -2,13 +2,13 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--primary-dark);
+    background: var(--deep-navy);
 }
 
 .app-header {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
     position: sticky;
     top: 0;
@@ -16,6 +16,7 @@
     border-bottom: 1px solid var(--glass-border);
 }
 
+/* Water wave effect on header bottom */
 .app-header::after {
     content: '';
     position: absolute;
@@ -23,14 +24,29 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    background: linear-gradient(90deg, transparent, var(--sky-blue), var(--teal-water), transparent);
+    animation: wave-flow 3s ease-in-out infinite;
+}
+
+@keyframes wave-flow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scaleX(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scaleX(1.1);
+    }
 }
 
 .nav-link {
     color: var(--text-primary);
     text-decoration: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 600;
     font-size: 0.9375rem;
@@ -45,10 +61,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+    background: linear-gradient(135deg, var(--sky-blue), var(--teal-water));
     opacity: 0;
     transition: opacity 0.3s;
     z-index: -1;
+    border-radius: var(--radius-md);
 }
 
 .nav-link:hover::before {
@@ -56,28 +73,35 @@
 }
 
 .nav-link:hover {
-    color: var(--neon-cyan);
+    color: var(--sky-blue);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(100, 255, 218, 0.2);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+}
+
+/* Active nav link */
+.nav-link.active {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--sky-blue);
 }
 
 .app-content {
     flex: 1;
     padding: 2rem 0;
-    background: var(--primary-dark);
+    background: var(--deep-navy);
     min-height: calc(100vh - 200px);
 }
 
 .app-footer {
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-top: 1px solid var(--glass-border);
     margin-top: auto;
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
     position: relative;
 }
 
+/* Water wave effect on footer top */
 .app-footer::before {
     content: '';
     position: absolute;
@@ -85,15 +109,17 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    background: linear-gradient(90deg, transparent, var(--sky-blue), var(--teal-water), transparent);
+    animation: wave-flow 3s ease-in-out infinite reverse;
 }
 
 .footer-link {
-    color: var(--neon-cyan);
+    color: var(--sky-blue);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s;
     position: relative;
+    display: inline-block;
 }
 
 .footer-link::after {
@@ -103,7 +129,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--neon-cyan);
+    background: linear-gradient(90deg, var(--sky-blue), var(--teal-water));
     transition: width 0.3s;
 }
 
@@ -112,9 +138,11 @@
 }
 
 .footer-link:hover {
-    text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+    color: var(--teal-water);
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
+/* Container utilities */
 .container {
     max-width: 1280px;
 }
@@ -214,7 +242,12 @@
     animation: slideInFromTop 0.5s ease-out;
 }
 
-/* Logo glow effect */
+/* Logo water glow */
 .text-2xl {
-    text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    transition: text-shadow 0.3s;
+}
+
+.text-2xl:hover {
+    text-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
 }
