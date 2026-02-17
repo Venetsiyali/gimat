@@ -4,6 +4,10 @@ docs/
 README.md
 *.md
 
+# Backend (deployed on Railway, not needed for Vercel)
+api/
+backend/
+
 # Heavy models & data
 ml_models/
 *.pt
