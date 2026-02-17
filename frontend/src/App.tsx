@@ -33,7 +33,7 @@ function App() {
                 <main className="app-content">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
-                        <Route to="/network" element={<NetworkView />} />
+                        <Route path="/network" element={<NetworkView />} />
                         <Route path="/predictions" element={<Predictions />} />
                     </Routes>
                 </main>
