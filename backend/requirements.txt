@@ -1,5 +1,6 @@
 # ==========================================
-# GIMAT Backend Dependencies
+# GIMAT Backend Dependencies - Railway Optimized
+# Lightweight version for fast deployment
 # ==========================================
 
 # Web Framework
@@ -21,43 +22,37 @@ alembic==1.13.1
 # Database - Neo4j
 neo4j==5.16.0
 
-# Deep Learning
-torch==2.1.2
-torchvision==0.16.2
-torch-geometric==2.4.0
-pytorch-lightning==2.1.3
+# ==========================================
+# LIGHTWEIGHT ML (PyTorch removed for speed)
+# Use ONNX Runtime or external API for models
+# ==========================================
+# onnxruntime==1.16.3  # Uncomment if using ONNX models
 
-# Time Series & ML
+# Time Series & ML (Lightweight)
 numpy==1.26.3
 pandas==2.1.4
 scikit-learn==1.4.0
 statsmodels==0.14.1
-prophet==1.1.5
 
 # Wavelet Analysis
 PyWavelets==1.5.0
 
-# Explainable AI
-shap==0.44.0
-lime==0.2.0.1
-
-# Plotting (for XAI visualization)
+# Plotting (minimal)
 matplotlib==3.8.2
-seaborn==0.13.1
 
-# Web Scraping
+# Web Scraping (Lightweight - Playwright removed)
 requests==2.31.0
 beautifulsoup4==4.12.3
-selenium==4.16.0
+httpx==0.26.0
 lxml==5.1.0
 
 # PDF Parsing
 pdfplumber==0.10.3
 PyPDF2==3.0.1
 
-# NLP
+# NLP (Lightweight transformers)
+sentence-transformers==2.2.2
 transformers==4.36.2
-spacy==3.7.2
 
 # Data Validation
 jsonschema==4.20.0
@@ -73,24 +68,16 @@ python-json-logger==2.0.7
 pytest==7.4.3
 pytest-asyncio==0.21.1
 
-# RAG (Retrieval-Augmented Generation)
+# RAG (ChromaDB client only)
 chromadb==0.4.18
-sentence-transformers==2.2.2
-langchain==0.1.0
 openai==1.6.1
+langchain==0.1.0
 
 # Edge & Streaming
-aiokafka==0.8.1
 redis==5.0.1
 
-# Satellite Data
+# Satellite Data (Lightweight)
 rasterio==1.3.9
-sentinelsat==1.2.1
-
-# Advanced Scrapers
-playwright==1.40.0
-
-httpx==0.26.0
 
 # Environment Variables
 python-dotenv==1.0.0
@@ -107,7 +94,23 @@ aiofiles==23.2.1
 
 # Data formats
 openpyxl==3.1.2
-xlrd==2.0.1
 
-# Monitoring (optional)
+# Monitoring
 prometheus-client==0.19.0
+
+# ==========================================
+# REMOVED HEAVY PACKAGES (for fast build):
+# ==========================================
+# torch==2.1.2                    # ~500MB - Use ONNX or external API
+# torchvision==0.16.2             # ~100MB
+# torch-geometric==2.4.0          # Heavy
+# pytorch-lightning==2.1.3        # Heavy
+# prophet==1.1.5                  # Has C++ dependencies
+# shap==0.44.0                    # Heavy
+# lime==0.2.0.1                   # Can add later
+# selenium==4.16.0                # Heavy browser automation
+# playwright==1.40.0              # ~300MB - Use httpx instead
+# spacy==3.7.2                    # ~100MB - Use transformers only
+# seaborn==0.13.1                 # Plotting not critical
+# aiokafka==0.8.1                 # Kafka optional
+# sentinelsat==1.2.1              # Optional satellite data
