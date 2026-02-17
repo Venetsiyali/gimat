@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import NetworkView from './pages/NetworkView';
 import Predictions from './pages/Predictions';
+import './components/GlassStyles.css';
 import './App.css';
 
 function App() {
