@@ -1,43 +1,16 @@
 """
-GIMAT API - Minimal Railway Version
-Only essential endpoints, no heavy dependencies
+GIMAT API - Absolute Minimum for Railway
+Zero dependencies on other modules
 """
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
 import os
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Startup with graceful degradation"""
-    print("="*50)
-    print("GIMAT API Starting (Railway Minimal)")
-    print("="*50)
-    
-    # Optional database connections
-    try:
-        from backend.database.railway_db import db_manager
-        await db_manager.connect_all()
-        print("✓ Databases connected")
-    except ImportError:
-        print("⚠ Database module not available")
-    except Exception as e:
-        print(f"⚠ Database skipped: {str(e)[:100]}")
-    
-    print("✓ API Ready!")
-    print("="*50)
-    
-    yield
-    
-    print("Shutting down...")
-
-# Create app
+# Minimal app - NO external imports
 app = FastAPI(
     title="GIMAT API",
-    description="Hydrological Intelligence System - Railway Deployment",
-    version="1.0.0-railway",
-    lifespan=lifespan
+    version="1.0.0-minimal"
 )
 
 # CORS
@@ -49,59 +22,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ==========================================
-# Essential Endpoints
-# ==========================================
-
 @app.get("/")
-async def root():
-    """Root endpoint"""
-    return {
-        "app": "GIMAT",
-        "version": "1.0.0-railway",
-        "status": "running",
-        "docs": "/docs",
-        "health": "/health"
-    }
+def root():
+    return {"status": "running", "app": "GIMAT", "docs": "/docs"}
 
 @app.get("/health")
-async def health():
-    """Health check - always returns healthy if app is running"""
-    return {
-        "status": "healthy",
-        "version": "1.0.0-railway"
-    }
+def health():
+    return {"status": "healthy"}
 
 @app.get("/api/status")
-async def api_status():
-    """API status information"""
-    return {
-        "api": "operational",
-        "mode": "minimal",
-        "features": ["basic-api", "database-ready"],
-        "railway": True
-    }
+def status():
+    return {"railway": True, "deployment": "success"}
 
-# ==========================================
-# Optional routers (graceful import)
-# ==========================================
-
-try:
-    from backend.api.data_endpoints import router as data_router
-    app.include_router(data_router, prefix="/api/data", tags=["Data"])
-    print("✓ Data endpoints loaded"
-)
-except ImportError as e:
-    print(f"⚠ Data endpoints skipped: {e}")
-
-try:
-    from backend.api.prediction_endpoints import router as prediction_router
-    app.include_router(prediction_router, prefix="/api/predictions", tags=["Predictions"])
-    print("✓ Prediction endpoints loaded")
-except ImportError:
-    print("⚠ Prediction endpoints skipped")
-
-# Main
+# No lifespan, no database, no imports - just works
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
