@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import NetworkView from './pages/NetworkView';
 import Predictions from './pages/Predictions';
+import About from './pages/About';
 import './components/GlassStyles.css';
 import './App.css';
 
@@ -26,6 +27,7 @@ function App() {
                             <Link to="/" className="nav-link">Dashboard</Link>
                             <Link to="/network" className="nav-link">Tarmoq</Link>
                             <Link to="/predictions" className="nav-link">Prognozlar</Link>
+                            <Link to="/about" className="nav-link">Haqida</Link>
                         </nav>
                     </div>
                 </header>
@@ -36,13 +38,15 @@ function App() {
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/network" element={<NetworkView />} />
                         <Route path="/predictions" element={<Predictions />} />
+                        <Route path="/about" element={<About />} />
                     </Routes>
                 </main>
 
                 {/* Footer */}
                 <footer className="app-footer">
-                    <div className="container mx-auto px-4 py-4 text-center text-gray-600">
-                        <p>© 2024 GIMAT - PhD Dissertatsiya Loyihasi</p>
+                    <div className="container mx-auto px-4 py-6 text-center">
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>© 2026 GIMAT Platform</p>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>Yaratuvchi: Venetsiyali</p>
                     </div>
                 </footer>
             </div>
