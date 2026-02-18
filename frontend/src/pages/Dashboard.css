@@ -219,3 +219,106 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ─── DASHBOARD TECH BANNER ──────────────────────────── */
+.dash-tech-banner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    background: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.dash-tech-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #CBD5E1;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.dash-tech-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+/* High-Contrast Badges (shared with About page) */
+.hc-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0.03em;
+    border-width: 1px;
+    border-style: solid;
+    white-space: nowrap;
+    transition: transform 0.15s;
+    cursor: default;
+}
+
+.hc-badge:hover {
+    transform: translateY(-2px);
+}
+
+/* Preprocessing — dark blue + sky text */
+.hc-badge-preprocessing {
+    background: #0C2340;
+    color: #0EA5E9;
+    border-color: #0EA5E9;
+}
+
+.hc-badge-preprocessing:hover {
+    background: #0EA5E9;
+    color: #020617;
+}
+
+/* AI Models — dark purple + neon purple */
+.hc-badge-ai {
+    background: #1E0A3C;
+    color: #A855F7;
+    border-color: #A855F7;
+}
+
+.hc-badge-ai:hover {
+    background: #A855F7;
+    color: #020617;
+}
+
+/* Analytics — dark emerald + green */
+.hc-badge-analytics {
+    background: #052E16;
+    color: #10B981;
+    border-color: #10B981;
+}
+
+.hc-badge-analytics:hover {
+    background: #10B981;
+    color: #020617;
+}
+
+/* Database — dark amber + gold */
+.hc-badge-database {
+    background: #1C1400;
+    color: #FACC15;
+    border-color: #FACC15;
+}
+
+.hc-badge-database:hover {
+    background: #FACC15;
+    color: #020617;
+}
+
+@media (max-width: 768px) {
+    .dash-tech-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -97,13 +97,27 @@ const Dashboard: React.FC = () => {
 
     return (
         <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '2.5rem' }} className="fade-in">
-                <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'var(--text-primary)' }}>
+            <div style={{ marginBottom: '1.5rem' }} className="fade-in">
+                <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.5rem', color: '#38BDF8' }}>
                     📊 Dashboard
                 </h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>
+                <p style={{ color: '#FFFFFF', fontSize: '1.05rem', fontWeight: '500' }}>
                     Real-time gidrologik monitoring va PhD-darajasidagi tahlil
                 </p>
+            </div>
+
+            {/* AI Technology Badge Banner */}
+            <div className="dash-tech-banner fade-in">
+                <span className="dash-tech-label">🧠 AI Texnologiyalar:</span>
+                <div className="dash-tech-badges">
+                    <span className="hc-badge hc-badge-preprocessing">Wavelet</span>
+                    <span className="hc-badge hc-badge-preprocessing">SARIMA</span>
+                    <span className="hc-badge hc-badge-ai">Bi-LSTM</span>
+                    <span className="hc-badge hc-badge-ai">GNN</span>
+                    <span className="hc-badge hc-badge-analytics">XAI</span>
+                    <span className="hc-badge hc-badge-analytics">RAG</span>
+                    <span className="hc-badge hc-badge-database">Neo4j</span>
+                </div>
             </div>
 
             {/* Station Selector */}

@@ -142,31 +142,91 @@ const About: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Tech Stack */}
+                {/* Tech Stack — High-Contrast Badges */}
                 <div className="card fade-in" style={{ animationDelay: '0.3s' }}>
                     <div className="section-header">
                         <span className="section-icon">⚙️</span>
                         <h2 className="section-title">GIMAT platformasi texnologiyalari</h2>
                     </div>
+
+                    {/* AI Technologies Hero Banner */}
+                    <div className="ai-tech-banner">
+                        <div className="ai-tech-banner-label">🧠 Asosiy AI texnologiyalar</div>
+                        <div className="ai-tech-banner-badges">
+                            {/* Preprocessing — dark blue bg, bright sky text */}
+                            <span className="hc-badge hc-badge-preprocessing">Wavelet</span>
+                            <span className="hc-badge hc-badge-preprocessing">SARIMA</span>
+                            {/* AI Models — dark purple bg, neon purple text */}
+                            <span className="hc-badge hc-badge-ai">Bi-LSTM</span>
+                            <span className="hc-badge hc-badge-ai">GNN</span>
+                            {/* Analytics — dark emerald bg, green text */}
+                            <span className="hc-badge hc-badge-analytics">XAI</span>
+                            <span className="hc-badge hc-badge-analytics">RAG</span>
+                            {/* Database — dark slate bg, gold text */}
+                            <span className="hc-badge hc-badge-database">Neo4j</span>
+                        </div>
+                    </div>
+
+                    {/* Legend */}
+                    <div className="badge-legend">
+                        <div className="legend-item">
+                            <span className="hc-badge hc-badge-preprocessing legend-sample">●</span>
+                            <span className="legend-label">Preprocessing</span>
+                        </div>
+                        <div className="legend-item">
+                            <span className="hc-badge hc-badge-ai legend-sample">●</span>
+                            <span className="legend-label">AI Models</span>
+                        </div>
+                        <div className="legend-item">
+                            <span className="hc-badge hc-badge-analytics legend-sample">●</span>
+                            <span className="legend-label">Analytics & Search</span>
+                        </div>
+                        <div className="legend-item">
+                            <span className="hc-badge hc-badge-database legend-sample">●</span>
+                            <span className="legend-label">Database</span>
+                        </div>
+                    </div>
+
                     <div className="tech-stack-dark">
+                        <div className="tech-category-dark">
+                            <h4>🔵 Preprocessing</h4>
+                            <div className="tech-tags-dark">
+                                <span className="hc-badge hc-badge-preprocessing">Wavelet</span>
+                                <span className="hc-badge hc-badge-preprocessing">SARIMA</span>
+                                <span className="hc-badge hc-badge-preprocessing">TimescaleDB</span>
+                            </div>
+                        </div>
+                        <div className="tech-category-dark">
+                            <h4>🟣 AI Models</h4>
+                            <div className="tech-tags-dark">
+                                <span className="hc-badge hc-badge-ai">Bi-LSTM</span>
+                                <span className="hc-badge hc-badge-ai">GNN</span>
+                                <span className="hc-badge hc-badge-ai">PyTorch</span>
+                            </div>
+                        </div>
+                        <div className="tech-category-dark">
+                            <h4>🟢 Analytics & Search</h4>
+                            <div className="tech-tags-dark">
+                                <span className="hc-badge hc-badge-analytics">XAI</span>
+                                <span className="hc-badge hc-badge-analytics">RAG</span>
+                                <span className="hc-badge hc-badge-analytics">SHAP/LIME</span>
+                                <span className="hc-badge hc-badge-analytics">ChromaDB</span>
+                            </div>
+                        </div>
+                        <div className="tech-category-dark">
+                            <h4>🟡 Database</h4>
+                            <div className="tech-tags-dark">
+                                <span className="hc-badge hc-badge-database">Neo4j</span>
+                                <span className="hc-badge hc-badge-database">PostgreSQL</span>
+                                <span className="hc-badge hc-badge-database">Redis</span>
+                            </div>
+                        </div>
                         <div className="tech-category-dark">
                             <h4>🔧 Backend</h4>
                             <div className="tech-tags-dark">
                                 <span className="tech-tag-dark">Python 3.11</span>
                                 <span className="tech-tag-dark">FastAPI</span>
-                                <span className="tech-tag-dark">PostgreSQL</span>
-                                <span className="tech-tag-dark">Redis</span>
                                 <span className="tech-tag-dark">Celery</span>
-                            </div>
-                        </div>
-                        <div className="tech-category-dark">
-                            <h4>🧠 AI/ML Models</h4>
-                            <div className="tech-tags-dark">
-                                <span className="tech-tag-dark glow">SARIMA</span>
-                                <span className="tech-tag-dark glow">Bi-LSTM</span>
-                                <span className="tech-tag-dark glow">GNN</span>
-                                <span className="tech-tag-dark glow">Wavelet</span>
-                                <span className="tech-tag-dark glow">SHAP/LIME</span>
                             </div>
                         </div>
                         <div className="tech-category-dark">
@@ -175,16 +235,6 @@ const About: React.FC = () => {
                                 <span className="tech-tag-dark">React 18</span>
                                 <span className="tech-tag-dark">TypeScript</span>
                                 <span className="tech-tag-dark">Recharts</span>
-                                <span className="tech-tag-dark">D3.js</span>
-                            </div>
-                        </div>
-                        <div className="tech-category-dark">
-                            <h4>🌐 Knowledge AI</h4>
-                            <div className="tech-tags-dark">
-                                <span className="tech-tag-dark">Neo4j</span>
-                                <span className="tech-tag-dark">RAG</span>
-                                <span className="tech-tag-dark">ChromaDB</span>
-                                <span className="tech-tag-dark">LangChain</span>
                             </div>
                         </div>
                     </div>

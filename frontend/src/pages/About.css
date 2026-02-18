@@ -503,3 +503,173 @@
         padding: 1.5rem 1rem;
     }
 }
+
+/* ═══════════════════════════════════════════════════════
+   HIGH-CONTRAST BADGE SYSTEM
+   NO opacity. NO blur. NO glow. 100% solid colors.
+   ═══════════════════════════════════════════════════════ */
+
+/* Base badge — solid, no transparency */
+.hc-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: 0.03em;
+    border-width: 1px;
+    border-style: solid;
+    white-space: nowrap;
+    transition: transform 0.15s, box-shadow 0.15s;
+    cursor: default;
+    text-decoration: none;
+}
+
+.hc-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Preprocessing — dark blue bg, bright sky blue text */
+.hc-badge-preprocessing {
+    background: #0C2340;
+    /* deep navy */
+    color: #0EA5E9;
+    /* Sky 500 — bright */
+    border-color: #0EA5E9;
+}
+
+.hc-badge-preprocessing:hover {
+    background: #0EA5E9;
+    color: #020617;
+}
+
+/* AI Models — dark purple bg, neon purple text */
+.hc-badge-ai {
+    background: #1E0A3C;
+    /* deep purple */
+    color: #A855F7;
+    /* Purple 500 — neon */
+    border-color: #A855F7;
+}
+
+.hc-badge-ai:hover {
+    background: #A855F7;
+    color: #020617;
+}
+
+/* Analytics & Search — dark emerald bg, green text */
+.hc-badge-analytics {
+    background: #052E16;
+    /* deep emerald */
+    color: #10B981;
+    /* Emerald 500 */
+    border-color: #10B981;
+}
+
+.hc-badge-analytics:hover {
+    background: #10B981;
+    color: #020617;
+}
+
+/* Database — dark slate bg, gold/yellow text */
+.hc-badge-database {
+    background: #1C1400;
+    /* deep amber-black */
+    color: #FACC15;
+    /* Yellow 400 — gold */
+    border-color: #FACC15;
+}
+
+.hc-badge-database:hover {
+    background: #FACC15;
+    color: #020617;
+}
+
+/* Legend sample dot */
+.legend-sample {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+
+/* ─── AI TECH HERO BANNER (About page) ──────────────── */
+.ai-tech-banner {
+    background: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.ai-tech-banner-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #CBD5E1;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+.ai-tech-banner-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* ─── BADGE LEGEND ───────────────────────────────────── */
+.badge-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding: 1rem 1.25rem;
+    background: #1E293B;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 768px) {
+    .about-title-dark {
+        font-size: 2.25rem;
+        flex-direction: column;
+    }
+
+    .creator-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .objective-grid,
+    .tech-stack-dark,
+    .mission-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .about-container-dark {
+        padding: 1.5rem 1rem;
+    }
+
+    .ai-tech-banner-badges {
+        gap: 0.5rem;
+    }
+
+    .badge-legend {
+        gap: 0.75rem;
+    }
+}
