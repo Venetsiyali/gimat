@@ -44,11 +44,37 @@ function App() {
 
                 {/* Footer */}
                 <footer className="app-footer">
-                    <div className="container mx-auto px-4 py-6 text-center">
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>© 2026 GIMAT Platform</p>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
-                            <Link to="/about" className="footer-link">Dastur yaratuvchisi</Link>
-                        </p>
+                    {/* AI Technology Badge Strip */}
+                    <div className="footer-badge-strip">
+                        <span className="footer-badge-label">🧠 AI Texnologiyalar:</span>
+                        <div className="footer-badges">
+                            <span className="ft-badge ft-badge-blue">Wavelet</span>
+                            <span className="ft-badge ft-badge-blue">SARIMA</span>
+                            <span className="ft-badge ft-badge-purple">Bi-LSTM</span>
+                            <span className="ft-badge ft-badge-purple">GNN</span>
+                            <span className="ft-badge ft-badge-green">XAI</span>
+                            <span className="ft-badge ft-badge-green">RAG</span>
+                            <span className="ft-badge ft-badge-yellow">Neo4j</span>
+                        </div>
+                    </div>
+
+                    {/* Author Block */}
+                    <div className="footer-author-block">
+                        <div className="footer-author-info">
+                            <span className="footer-author-icon">👨‍🎓</span>
+                            <div>
+                                <div className="footer-author-name">Rustamjon Nasridinov</div>
+                                <div className="footer-author-title">PhD Student · Ixtisoslik: 05.01.10 · TATU</div>
+                            </div>
+                        </div>
+                        <Link to="/about" className="footer-detail-btn">
+                            Batafsil ma'lumot →
+                        </Link>
+                    </div>
+
+                    {/* Copyright */}
+                    <div className="footer-copyright">
+                        <p>© 2026 GIMAT Platform — Gidrologik Intellektual Monitoring va Axborot Tizimi</p>
                     </div>
                 </footer>
             </div>
