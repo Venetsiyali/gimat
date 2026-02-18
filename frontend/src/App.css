@@ -1,22 +1,25 @@
+/* App Layout - High Contrast Hydrological */
+
 .app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--deep-navy);
+    background: #020617;
 }
 
+/* ─── HEADER ─────────────────────────────────────────── */
 .app-header {
-    background: var(--glass-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid #1e293b;
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 24px rgba(2, 6, 23, 0.8);
 }
 
-/* Water wave effect on header bottom */
+/* Animated water line at bottom of header */
 .app-header::after {
     content: '';
     position: absolute;
@@ -24,84 +27,67 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--sky-blue), var(--teal-water), transparent);
-    animation: wave-flow 3s ease-in-out infinite;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            #0ea5e9 30%,
+            #2dd4bf 70%,
+            transparent 100%);
+    animation: water-line 4s ease-in-out infinite;
 }
 
-@keyframes wave-flow {
+@keyframes water-line {
 
     0%,
     100% {
-        opacity: 0.5;
-        transform: scaleX(1);
+        opacity: 0.4;
+        transform: scaleX(0.8);
     }
 
     50% {
         opacity: 1;
-        transform: scaleX(1.1);
+        transform: scaleX(1);
     }
 }
 
+/* ─── NAVIGATION ─────────────────────────────────────── */
 .nav-link {
-    color: var(--text-primary);
+    color: #cbd5e1;
     text-decoration: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
     font-weight: 600;
     font-size: 0.9375rem;
+    transition: all 0.25s ease;
     position: relative;
-    overflow: hidden;
-}
-
-.nav-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--sky-blue), var(--teal-water));
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: -1;
-    border-radius: var(--radius-md);
-}
-
-.nav-link:hover::before {
-    opacity: 0.15;
 }
 
 .nav-link:hover {
-    color: var(--sky-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    background: rgba(14, 165, 233, 0.1);
+    transform: translateY(-1px);
 }
 
-/* Active nav link */
 .nav-link.active {
-    background: rgba(56, 189, 248, 0.1);
-    color: var(--sky-blue);
+    color: #38bdf8;
+    background: rgba(14, 165, 233, 0.12);
 }
 
+/* ─── MAIN CONTENT ───────────────────────────────────── */
 .app-content {
     flex: 1;
-    padding: 2rem 0;
-    background: var(--deep-navy);
-    min-height: calc(100vh - 200px);
+    background: #020617;
+    min-height: calc(100vh - 130px);
 }
 
+/* ─── FOOTER ─────────────────────────────────────────── */
 .app-footer {
-    background: var(--glass-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-top: 1px solid var(--glass-border);
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid #1e293b;
     margin-top: auto;
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
     position: relative;
 }
 
-/* Water wave effect on footer top */
 .app-footer::before {
     content: '';
     position: absolute;
@@ -109,17 +95,17 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--sky-blue), var(--teal-water), transparent);
-    animation: wave-flow 3s ease-in-out infinite reverse;
+    background: linear-gradient(90deg,
+            transparent, #0ea5e9, #2dd4bf, transparent);
+    animation: water-line 4s ease-in-out infinite reverse;
 }
 
 .footer-link {
-    color: var(--sky-blue);
+    color: #38bdf8;
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s;
+    transition: all 0.25s;
     position: relative;
-    display: inline-block;
 }
 
 .footer-link::after {
@@ -129,7 +115,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--sky-blue), var(--teal-water));
+    background: linear-gradient(90deg, #0ea5e9, #2dd4bf);
     transition: width 0.3s;
 }
 
@@ -138,11 +124,10 @@
 }
 
 .footer-link:hover {
-    color: var(--teal-water);
-    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    color: #2dd4bf;
 }
 
-/* Container utilities */
+/* ─── UTILITY CLASSES ────────────────────────────────── */
 .container {
     max-width: 1280px;
 }
@@ -173,18 +158,18 @@
 }
 
 .px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
 }
 
 .py-4 {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
 }
 
 .py-6 {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;
 }
 
 .text-2xl {
@@ -196,7 +181,7 @@
 }
 
 .text-white {
-    color: var(--text-primary);
+    color: #f8fafc;
 }
 
 .text-sm {
@@ -204,7 +189,7 @@
 }
 
 .text-blue-200 {
-    color: var(--text-secondary);
+    color: #cbd5e1;
 }
 
 .hidden {
@@ -216,7 +201,7 @@
 }
 
 .text-gray-600 {
-    color: var(--text-secondary);
+    color: #94a3b8;
 }
 
 @media (min-width: 768px) {
@@ -225,11 +210,11 @@
     }
 }
 
-/* Enhanced animations */
-@keyframes slideInFromTop {
+/* Header slide-in */
+@keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translateY(-20px);
     }
 
     to {
@@ -239,15 +224,5 @@
 }
 
 .app-header {
-    animation: slideInFromTop 0.5s ease-out;
-}
-
-/* Logo water glow */
-.text-2xl {
-    text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-    transition: text-shadow 0.3s;
-}
-
-.text-2xl:hover {
-    text-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+    animation: slideDown 0.4s ease-out;
 }

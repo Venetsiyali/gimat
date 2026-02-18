@@ -44,10 +44,23 @@ const About: React.FC = () => {
                             </div>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-icon">🔬</span>
+                            <span className="detail-icon">🎓</span>
                             <div>
-                                <strong>Ixtisoslik:</strong>
-                                <p>05.01.10 – Axborot qidirish va olish</p>
+                                <strong>Ilmiy maqom:</strong>
+                                <p>Tayanch doktorant (PhD Student) — Assistent-o'qituvchi</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Specialization Highlight Block */}
+                    <div className="specialization-block">
+                        <div className="spec-label">🔬 Ilmiy ixtisoslik</div>
+                        <div className="spec-code">05.01.10</div>
+                        <div className="spec-title">Axborot qidirish va olish</div>
+                        <div className="research-topic">
+                            <div className="research-topic-label">📖 Dissertatsiya mavzusi</div>
+                            <div className="research-topic-text">
+                                "Gidrologik ko'rsatkichlar dinamikasini vaqt qatorlarida monitoring qilishning gibrid modellari va intellektual axborot tizimi"
                             </div>
                         </div>
                     </div>
