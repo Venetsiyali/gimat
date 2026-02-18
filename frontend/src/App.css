@@ -1,4 +1,4 @@
-/* App Layout — Maximum Text Clarity */
+/* App Layout — Solid Colors, No Transparency */
 
 .app {
     min-height: 100vh;
@@ -7,93 +7,62 @@
     background: #020617;
 }
 
-/* ─── HEADER ─────────────────────────────────────────── */
+/* ─── HEADER — SOLID ─────────────────────────────────── */
 .app-header {
-    background: rgba(15, 23, 42, 0.97);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid #334155;
+    background: #0F172A;
+    /* solid — no backdrop-filter */
+    border-bottom: 1px solid #1E293B;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
-    animation: slideDown 0.4s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Water line */
+/* Thin accent line at bottom */
 .app-header::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #0ea5e9, #2dd4bf, transparent);
-    animation: water-line 4s ease-in-out infinite;
-}
-
-@keyframes water-line {
-
-    0%,
-    100% {
-        opacity: 0.5;
-    }
-
-    50% {
-        opacity: 1;
-    }
+    height: 2px;
+    background: linear-gradient(90deg, #0EA5E9, #2DD4BF);
 }
 
 /* ─── NAV LINKS ──────────────────────────────────────── */
 .nav-link {
-    color: #e2e8f0 !important;
-    /* bright — NOT muted */
+    color: #FFFFFF;
     text-decoration: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
     font-weight: 600;
-    font-size: 0.975rem;
-    transition: all 0.25s;
-    opacity: 1 !important;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
 }
 
 .nav-link:hover {
-    color: #38bdf8 !important;
-    background: rgba(14, 165, 233, 0.12);
-    transform: translateY(-1px);
+    color: #38BDF8;
+    background: #1E293B;
+    text-decoration: none;
 }
 
 .nav-link.active {
-    color: #38bdf8 !important;
-    background: rgba(14, 165, 233, 0.14);
+    color: #38BDF8;
+    background: #1E293B;
 }
 
 /* ─── MAIN CONTENT ───────────────────────────────────── */
 .app-content {
     flex: 1;
     background: #020617;
-    min-height: calc(100vh - 130px);
 }
 
-/* ─── FOOTER ─────────────────────────────────────────── */
+/* ─── FOOTER — SOLID ─────────────────────────────────── */
 .app-footer {
-    background: rgba(15, 23, 42, 0.97);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid #334155;
+    background: #0F172A;
+    /* solid — no backdrop-filter */
+    border-top: 1px solid #1E293B;
     margin-top: auto;
-    position: relative;
 }
 
 .app-footer::before {
@@ -102,43 +71,29 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #0ea5e9, #2dd4bf, transparent);
-    animation: water-line 4s ease-in-out infinite reverse;
+    height: 2px;
+    background: linear-gradient(90deg, #0EA5E9, #2DD4BF);
 }
 
-.footer-link {
-    color: #38bdf8 !important;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.25s;
-    opacity: 1 !important;
+.app-footer {
     position: relative;
 }
 
-.footer-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #0ea5e9, #2dd4bf);
-    transition: width 0.3s;
-}
-
-.footer-link:hover::after {
-    width: 100%;
+.footer-link {
+    color: #38BDF8;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
 .footer-link:hover {
-    color: #2dd4bf !important;
+    color: #2DD4BF;
+    text-decoration: underline;
 }
 
 /* Footer text */
 .app-footer p {
-    color: #cbd5e1 !important;
-    opacity: 1 !important;
+    color: #E2E8F0;
 }
 
 /* ─── UTILITY CLASSES ────────────────────────────────── */
@@ -172,22 +127,22 @@
 }
 
 .px-4 {
-    padding-left: 1.2rem;
-    padding-right: 1.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .py-4 {
-    padding-top: 1.2rem;
-    padding-bottom: 1.2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .py-6 {
-    padding-top: 1.8rem;
-    padding-bottom: 1.8rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
 .text-2xl {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 
@@ -196,17 +151,15 @@
 }
 
 .text-white {
-    color: #f1f5f9 !important;
-    opacity: 1 !important;
+    color: #FFFFFF;
 }
 
 .text-sm {
-    font-size: 0.9625rem;
+    font-size: 0.9rem;
 }
 
 .text-blue-200 {
-    color: #e2e8f0 !important;
-    opacity: 1 !important;
+    color: #E2E8F0;
 }
 
 .hidden {
@@ -218,8 +171,7 @@
 }
 
 .text-gray-600 {
-    color: #cbd5e1 !important;
-    opacity: 1 !important;
+    color: #CBD5E1;
 }
 
 @media (min-width: 768px) {

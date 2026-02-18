@@ -1,201 +1,188 @@
-/* Dashboard — Maximum Text Clarity */
+/* Dashboard — WCAG 2.1 Solid Colors */
 
 .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2.6rem 2.4rem;
+    padding: 2.5rem 2rem;
 }
 
 /* ─── PAGE HEADER ────────────────────────────────────── */
 .dashboard-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     text-align: center;
 }
 
 .dashboard-title {
-    font-size: 3rem;
+    font-size: 2.75rem;
     font-weight: 800;
-    color: #38bdf8 !important;
-    margin-bottom: 0.75rem;
-    opacity: 1 !important;
+    color: #38BDF8;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
 }
 
 .dashboard-subtitle {
-    font-size: 1.15rem;
-    color: #e2e8f0 !important;
+    font-size: 1.1rem;
+    color: #FFFFFF;
     font-weight: 500;
-    opacity: 1 !important;
+    line-height: 1.6;
 }
 
 .dashboard-divider {
-    width: 80px;
+    width: 70px;
     height: 3px;
-    background: linear-gradient(90deg, #0ea5e9, #2dd4bf);
-    margin: 1.2rem auto;
+    background: linear-gradient(90deg, #38BDF8, #2DD4BF);
+    margin: 1rem auto;
     border-radius: 2px;
 }
 
-/* ─── SECTION TITLE (left accent border) ────────────── */
+/* ─── SECTION TITLE ──────────────────────────────────── */
 .section-title {
-    font-size: 1.55rem;
-    font-weight: 700;
-    color: #38bdf8 !important;
-    padding-left: 1.1rem;
-    border-left: 4px solid #38bdf8;
-    margin-bottom: 1.8rem;
-    line-height: 1.3;
-    opacity: 1 !important;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #38BDF8;
+    padding-left: 1rem;
+    border-left: 4px solid #38BDF8;
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
 }
 
-/* ─── STATION CARD ───────────────────────────────────── */
+/* ─── STATION CARD — SOLID ───────────────────────────── */
 .station-card {
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid #334155;
-    border-radius: 20px;
-    padding: 2.4rem;
-    margin-bottom: 2.4rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 18px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.2s;
 }
 
 .station-card:hover {
-    border-color: #0ea5e9;
-    box-shadow: 0 8px 40px rgba(14, 165, 233, 0.15);
+    border-color: #38BDF8;
 }
 
 .station-card label {
-    color: #e2e8f0 !important;
+    color: #FFFFFF;
     font-weight: 600;
     font-size: 1rem;
-    opacity: 1 !important;
 }
 
 /* ─── METRICS GRID ───────────────────────────────────── */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.8rem;
-    margin-bottom: 2.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-/* ─── CHART CARD ─────────────────────────────────────── */
+/* ─── CHART CARD — SOLID ─────────────────────────────── */
 .chart-card {
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid #334155;
-    border-radius: 20px;
-    padding: 2.4rem;
-    margin-bottom: 2.4rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 18px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.2s;
 }
 
 .chart-card:hover {
-    border-color: #0ea5e9;
-    box-shadow: 0 8px 40px rgba(14, 165, 233, 0.15);
+    border-color: #38BDF8;
 }
 
 /* ─── STATS GRID ─────────────────────────────────────── */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
 }
 
 .stat-box {
-    background: #1e293b;
+    background: #1E293B;
     border: 1px solid #334155;
-    border-radius: 12px;
-    padding: 1.6rem 1.8rem;
+    border-radius: 10px;
+    padding: 1.5rem;
     text-align: center;
-    transition: all 0.3s;
+    transition: border-color 0.2s;
 }
 
 .stat-box:hover {
-    border-color: #0ea5e9;
-    background: rgba(14, 165, 233, 0.05);
-    transform: translateY(-3px);
+    border-color: #38BDF8;
 }
 
 .stat-label {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    color: #cbd5e1 !important;
+    color: #CBD5E1;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.6rem;
-    opacity: 1 !important;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.5rem;
 }
 
 /* Dashboard numbers — LARGE & BRIGHT */
 .stat-value {
-    font-size: 2.2rem;
+    font-size: 2.25rem;
     font-weight: 800;
-    color: #38bdf8 !important;
-    font-family: 'Roboto Mono', monospace;
-    opacity: 1 !important;
-    text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
+    font-family: 'Roboto Mono', 'Courier New', monospace;
+    line-height: 1;
 }
 
 .stat-unit {
-    font-size: 0.95rem;
-    color: #e2e8f0 !important;
+    font-size: 0.9rem;
+    color: #FFFFFF;
     font-weight: 600;
     margin-top: 0.3rem;
-    opacity: 1 !important;
 }
 
 /* ─── SYSTEM INFO CARD ───────────────────────────────── */
 .system-info-card {
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(14, 165, 233, 0.04));
-    border: 2px solid #0ea5e9;
-    border-radius: 20px;
-    padding: 2.4rem;
-    box-shadow: 0 0 24px rgba(14, 165, 233, 0.15);
+    background: #0F172A;
+    border: 2px solid #38BDF8;
+    border-radius: 18px;
+    padding: 2rem;
 }
 
 .system-info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
 }
 
 .system-info-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 1.5rem;
-    background: rgba(14, 165, 233, 0.05);
-    border: 1px solid rgba(14, 165, 233, 0.18);
-    border-radius: 12px;
-    transition: all 0.3s;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    transition: border-color 0.2s;
 }
 
 .system-info-item:hover {
-    background: rgba(14, 165, 233, 0.1);
-    border-color: #0ea5e9;
+    border-color: #38BDF8;
 }
 
 .system-info-icon {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     flex-shrink: 0;
 }
 
 .system-info-text strong {
     display: block;
-    color: #ffffff !important;
+    color: #FFFFFF;
     font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-    opacity: 1 !important;
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
 }
 
 .system-info-text span {
-    color: #cbd5e1 !important;
-    font-size: 0.9rem;
+    color: #CBD5E1;
+    font-size: 0.875rem;
     font-weight: 500;
-    opacity: 1 !important;
 }
 
 /* ─── LOADING ────────────────────────────────────────── */
@@ -205,24 +192,23 @@
     align-items: center;
     justify-content: center;
     min-height: 60vh;
-    gap: 1.5rem;
+    gap: 1.25rem;
 }
 
 .loading-text {
-    color: #e2e8f0 !important;
-    font-size: 1.15rem;
+    color: #FFFFFF;
+    font-size: 1.1rem;
     font-weight: 600;
-    opacity: 1 !important;
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
 @media (max-width: 768px) {
     .dashboard-container {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
 
     .dashboard-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
 
     .metrics-grid {
