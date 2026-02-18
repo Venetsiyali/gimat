@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { dataAPI } from '../services/api';
 import { MetricCard, TimeSeriesChart } from '../components/Charts';
 import '../components/MetricCard.css';
@@ -19,6 +19,13 @@ interface LatestData {
     temperature: number;
 }
 
+/* Search terms defined outside component to avoid exhaustive-deps lint warning */
+const SEARCH_TERMS = [
+    'Zarafshon suv sathi', 'Amudaryo sarfi', 'Sirdaryo monitoring',
+    'Qashqadaryo prognoz', 'Surxondaryo tahlil', 'Chirchiq daryosi',
+    'Toshkent viloyati', 'Samarqand gidropost', 'Buxoro suv resurslari',
+];
+
 const Dashboard: React.FC = () => {
     const [stations, setStations] = useState<Station[]>([]);
     const [selectedStation, setSelectedStation] = useState<string>('');
@@ -29,13 +36,6 @@ const Dashboard: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
     const [showBottomSheet, setShowBottomSheet] = useState(false);
-    const searchRef = useRef<HTMLInputElement>(null);
-
-    const SEARCH_TERMS = [
-        'Zarafshon suv sathi', 'Amudaryo sarfi', 'Sirdaryo monitoring',
-        'Qashqadaryo prognoz', 'Surxondaryo tahlil', 'Chirchiq daryosi',
-        'Toshkent viloyati', 'Samarqand gidropost', 'Buxoro suv resurslari',
-    ];
 
     useEffect(() => { loadStations(); }, []);
 
@@ -144,7 +144,6 @@ const Dashboard: React.FC = () => {
                 <div className="fh-search-inner">
                     <span className="fh-search-icon">🔍</span>
                     <input
-                        ref={searchRef}
                         className="fh-search-input"
                         type="text"
                         placeholder="Qidiring: 'Zarafshon suv sathi', 'Amudaryo sarfi'..."
