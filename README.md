@@ -114,7 +114,23 @@ Railway Dashboard → Variables:
 
 ---
 
-## 🗄️ Database Initialization
+## 🗺️ Google Maps Configuration
+
+To remove the "For development purposes only" watermark:
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Select your project and go to **Billing**
+3. Link a billing account (required even for free tier)
+4. Go to **APIs & Services** → **Credentials**
+5. Edit your API Key (`AIzaSy...`)
+6. Under **Application restrictions**, add your domains:
+   - `https://your-project.vercel.app`
+   - `http://localhost:3000`
+7. Under **API restrictions**, enable **Maps JavaScript API** and **Places API**
+
+---
+
+## 🗄️ Database Initialization & Seeding
 
 After deployment, databases auto-initialize via `backend/database/init_railway.py`:
 
@@ -129,9 +145,23 @@ After deployment, databases auto-initialize via `backend/database/init_railway.p
 - ✅ Sample Chirchiq basin data
 
 **Manual initialization** (if needed):
+**Manual initialization** (if needed):
 ```bash
 railway run python backend/database/init_railway.py
 ```
+
+### 🌱 Seeding Real Data (Uzbekistan)
+To populate the database with real stations (Chorvoq, G'azalkent, etc.) and generate 30 days of mock data:
+
+```bash
+# Local
+cd backend
+python scripts/seed_data.py
+
+# Railway
+railway run python backend/scripts/seed_data.py
+```
+This script acts on both **PostgreSQL** (Observations) and **Neo4j** (Knowledge Graph).
 
 ---
 
