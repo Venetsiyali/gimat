@@ -19,11 +19,6 @@ interface LatestData {
     temperature: number;
 }
 
-/* Uzbekistan river stations mock positions for SVG map */
-const STATION_POSITIONS: Record<string, { x: number; y: number; label: string }> = {
-    default: { x: 50, y: 50, label: '' },
-};
-
 const Dashboard: React.FC = () => {
     const [stations, setStations] = useState<Station[]>([]);
     const [selectedStation, setSelectedStation] = useState<string>('');
