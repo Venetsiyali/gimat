@@ -1,9 +1,9 @@
-/* Dashboard - High Contrast Hydrological */
+/* Dashboard — Maximum Text Clarity */
 
 .dashboard-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2.4rem 2.4rem;
+    padding: 2.6rem 2.4rem;
 }
 
 /* ─── PAGE HEADER ────────────────────────────────────── */
@@ -13,20 +13,18 @@
 }
 
 .dashboard-title {
-    font-size: 2.75rem;
+    font-size: 3rem;
     font-weight: 800;
-    color: #f8fafc;
+    color: #38bdf8 !important;
     margin-bottom: 0.75rem;
-    background: linear-gradient(135deg, #38bdf8, #2dd4bf);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    opacity: 1 !important;
 }
 
 .dashboard-subtitle {
-    font-size: 1.1rem;
-    color: #94a3b8;
+    font-size: 1.15rem;
+    color: #e2e8f0 !important;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
 .dashboard-divider {
@@ -37,25 +35,26 @@
     border-radius: 2px;
 }
 
-/* ─── SECTION TITLES (with left accent border) ───────── */
+/* ─── SECTION TITLE (left accent border) ────────────── */
 .section-title {
-    font-size: 1.5rem;
+    font-size: 1.55rem;
     font-weight: 700;
-    color: #f8fafc;
-    padding-left: 1.2rem;
+    color: #38bdf8 !important;
+    padding-left: 1.1rem;
     border-left: 4px solid #38bdf8;
     margin-bottom: 1.8rem;
     line-height: 1.3;
+    opacity: 1 !important;
 }
 
-/* ─── STATION SELECTOR CARD ──────────────────────────── */
+/* ─── STATION CARD ───────────────────────────────────── */
 .station-card {
-    background: #0f172a;
-    border: 1px solid #1e293b;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid #334155;
     border-radius: 20px;
     padding: 2.4rem;
     margin-bottom: 2.4rem;
-    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.10);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -64,7 +63,14 @@
     box-shadow: 0 8px 40px rgba(14, 165, 233, 0.15);
 }
 
-/* ─── METRIC CARDS GRID ──────────────────────────────── */
+.station-card label {
+    color: #e2e8f0 !important;
+    font-weight: 600;
+    font-size: 1rem;
+    opacity: 1 !important;
+}
+
+/* ─── METRICS GRID ───────────────────────────────────── */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -74,12 +80,12 @@
 
 /* ─── CHART CARD ─────────────────────────────────────── */
 .chart-card {
-    background: #0f172a;
-    border: 1px solid #1e293b;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid #334155;
     border-radius: 20px;
     padding: 2.4rem;
     margin-bottom: 2.4rem;
-    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.10);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -100,7 +106,7 @@
     background: #1e293b;
     border: 1px solid #334155;
     border-radius: 12px;
-    padding: 1.5rem 1.8rem;
+    padding: 1.6rem 1.8rem;
     text-align: center;
     transition: all 0.3s;
 }
@@ -112,31 +118,36 @@
 }
 
 .stat-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #cbd5e1 !important;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 0.6rem;
+    opacity: 1 !important;
 }
 
+/* Dashboard numbers — LARGE & BRIGHT */
 .stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #38bdf8;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #38bdf8 !important;
     font-family: 'Roboto Mono', monospace;
+    opacity: 1 !important;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
 }
 
 .stat-unit {
-    font-size: 0.875rem;
-    color: #cbd5e1;
-    font-weight: 500;
+    font-size: 0.95rem;
+    color: #e2e8f0 !important;
+    font-weight: 600;
     margin-top: 0.3rem;
+    opacity: 1 !important;
 }
 
 /* ─── SYSTEM INFO CARD ───────────────────────────────── */
 .system-info-card {
-    background: linear-gradient(135deg, #0f172a, rgba(14, 165, 233, 0.04));
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(14, 165, 233, 0.04));
     border: 2px solid #0ea5e9;
     border-radius: 20px;
     padding: 2.4rem;
@@ -156,7 +167,7 @@
     gap: 1rem;
     padding: 1.2rem 1.5rem;
     background: rgba(14, 165, 233, 0.05);
-    border: 1px solid rgba(14, 165, 233, 0.15);
+    border: 1px solid rgba(14, 165, 233, 0.18);
     border-radius: 12px;
     transition: all 0.3s;
 }
@@ -173,19 +184,21 @@
 
 .system-info-text strong {
     display: block;
-    color: #f8fafc;
+    color: #ffffff !important;
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: 0.25rem;
+    opacity: 1 !important;
 }
 
 .system-info-text span {
-    color: #94a3b8;
-    font-size: 0.875rem;
+    color: #cbd5e1 !important;
+    font-size: 0.9rem;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
-/* ─── LOADING STATE ──────────────────────────────────── */
+/* ─── LOADING ────────────────────────────────────────── */
 .loading-container {
     display: flex;
     flex-direction: column;
@@ -196,9 +209,10 @@
 }
 
 .loading-text {
-    color: #94a3b8;
-    font-size: 1.1rem;
-    font-weight: 500;
+    color: #e2e8f0 !important;
+    font-size: 1.15rem;
+    font-weight: 600;
+    opacity: 1 !important;
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
@@ -208,7 +222,7 @@
     }
 
     .dashboard-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
     .metrics-grid {

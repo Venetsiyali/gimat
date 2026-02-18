@@ -1,4 +1,4 @@
-/* About Page - High Contrast Hydrological */
+/* About Page — Maximum Text Clarity */
 
 .about-container-dark {
     max-width: 1200px;
@@ -9,7 +9,7 @@
 /* ─── HERO ───────────────────────────────────────────── */
 .about-hero-dark {
     text-align: center;
-    padding: 3.6rem 0 4.2rem;
+    padding: 3.6rem 0 4rem;
     position: relative;
 }
 
@@ -26,14 +26,15 @@
 }
 
 .about-title-dark {
-    font-size: 3.25rem;
+    font-size: 3.3rem;
     font-weight: 900;
-    color: #f8fafc;
+    color: #38bdf8 !important;
     margin-bottom: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    opacity: 1 !important;
 }
 
 .title-icon {
@@ -43,8 +44,9 @@
 
 .about-subtitle-dark {
     font-size: 1.25rem;
-    color: #cbd5e1;
+    color: #e2e8f0 !important;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
 .neon-divider {
@@ -53,7 +55,6 @@
     background: linear-gradient(90deg, transparent, #0ea5e9, #2dd4bf, transparent);
     margin: 1.8rem auto;
     border-radius: 2px;
-    box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
 }
 
 /* ─── CONTENT ────────────────────────────────────────── */
@@ -65,26 +66,20 @@
 
 /* ─── CREATOR CARD ───────────────────────────────────── */
 .creator-main-card {
-    background: #0f172a;
-    border: 1px solid #1e293b;
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid #334155 !important;
     border-radius: 20px;
     padding: 3rem;
-    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.10);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.creator-main-card:hover {
-    border-color: #0ea5e9;
-    box-shadow: 0 8px 40px rgba(14, 165, 233, 0.15);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
 }
 
 .creator-header {
     display: flex;
     align-items: center;
     gap: 2.4rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.4rem;
     padding-bottom: 2.4rem;
-    border-bottom: 1px solid #1e293b;
+    border-bottom: 1px solid #334155;
 }
 
 .creator-avatar {
@@ -105,40 +100,43 @@
 }
 
 .creator-name {
-    font-size: 2.25rem;
-    font-weight: 800;
-    color: #f8fafc;
+    font-size: 2.25rem !important;
+    font-weight: 800 !important;
+    color: #38bdf8 !important;
     margin-bottom: 0.6rem;
+    opacity: 1 !important;
 }
 
 .creator-position {
-    font-size: 1.05rem;
-    color: #cbd5e1;
+    font-size: 1.1rem;
+    color: #e2e8f0 !important;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
+/* ─── DETAIL ITEMS ───────────────────────────────────── */
 .creator-details {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
 }
 
 .detail-item {
     display: flex;
     align-items: flex-start;
     gap: 1.2rem;
-    padding: 1.5rem 1.8rem;
+    padding: 1.4rem 1.6rem;
     background: #1e293b;
     border-radius: 12px;
     border: 1px solid #334155;
     border-left: 4px solid #0ea5e9;
-    transition: all 0.3s;
+    transition: all 0.25s;
 }
 
 .detail-item:hover {
-    background: rgba(14, 165, 233, 0.05);
+    background: rgba(14, 165, 233, 0.06);
     border-color: #0ea5e9;
-    transform: translateX(6px);
+    transform: translateX(5px);
 }
 
 .detail-icon {
@@ -148,59 +146,64 @@
 
 .detail-item strong {
     display: block;
-    color: #38bdf8;
+    color: #38bdf8 !important;
     font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
+    opacity: 1 !important;
 }
 
 .detail-item p {
-    color: #f8fafc;
-    font-size: 1rem;
+    color: #f1f5f9 !important;
+    font-size: 1.05rem;
     font-weight: 500;
     line-height: 1.6;
+    opacity: 1 !important;
 }
 
-/* ─── SPECIALIZATION HIGHLIGHT BLOCK ────────────────── */
+/* ─── SPECIALIZATION HIGHLIGHT BLOCK (TEAL) ──────────── */
 .specialization-block {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(45, 212, 191, 0.08));
-    border: 2px solid #0ea5e9;
-    border-radius: 16px;
-    padding: 2.4rem;
     margin-top: 1.8rem;
-    box-shadow: 0 0 24px rgba(14, 165, 233, 0.2);
+    background: rgba(45, 212, 191, 0.08);
+    border: 2px solid #2dd4bf;
+    border-radius: 16px;
+    padding: 2.2rem 2.4rem;
+    box-shadow: 0 0 28px rgba(45, 212, 191, 0.2);
 }
 
 .spec-label {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #38bdf8;
+    color: #2dd4bf !important;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
+    opacity: 1 !important;
 }
 
 .spec-code {
     font-family: 'Roboto Mono', monospace;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    color: #2dd4bf;
-    margin-bottom: 0.6rem;
+    color: #2dd4bf !important;
+    margin-bottom: 0.4rem;
+    opacity: 1 !important;
 }
 
 .spec-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #f8fafc;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff !important;
     line-height: 1.5;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.6rem;
+    opacity: 1 !important;
 }
 
 .research-topic {
     background: rgba(14, 165, 233, 0.08);
-    border: 1px solid rgba(14, 165, 233, 0.2);
+    border: 1px solid rgba(14, 165, 233, 0.25);
     border-left: 4px solid #38bdf8;
     border-radius: 10px;
     padding: 1.2rem 1.5rem;
@@ -209,18 +212,20 @@
 .research-topic-label {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #38bdf8;
+    color: #38bdf8 !important;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     margin-bottom: 0.5rem;
+    opacity: 1 !important;
 }
 
 .research-topic-text {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    color: #f8fafc;
-    line-height: 1.6;
+    color: #ffffff !important;
+    line-height: 1.65;
     font-style: italic;
+    opacity: 1 !important;
 }
 
 /* ─── SECTION HEADERS ────────────────────────────────── */
@@ -236,34 +241,37 @@
 }
 
 .section-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #f8fafc;
-    padding-left: 1.2rem;
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    color: #38bdf8 !important;
+    padding-left: 1.1rem;
     border-left: 4px solid #38bdf8;
     line-height: 1.3;
+    opacity: 1 !important;
 }
 
-/* ─── RESEARCH OBJECTIVES ────────────────────────────── */
+/* ─── RESEARCH ───────────────────────────────────────── */
 .research-title {
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 700;
-    color: #f8fafc;
+    color: #ffffff !important;
     text-align: center;
-    line-height: 1.5;
+    line-height: 1.55;
     margin-bottom: 2.4rem;
     padding: 1.5rem;
-    background: rgba(14, 165, 233, 0.05);
+    background: rgba(14, 165, 233, 0.06);
     border-radius: 12px;
-    border: 1px solid rgba(14, 165, 233, 0.15);
+    border: 1px solid rgba(14, 165, 233, 0.18);
+    opacity: 1 !important;
 }
 
 .objectives-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: #38bdf8;
+    color: #38bdf8 !important;
     text-align: center;
     margin-bottom: 2rem;
+    opacity: 1 !important;
 }
 
 .objective-grid {
@@ -279,7 +287,7 @@
     background: #1e293b;
     border: 1px solid #334155;
     border-radius: 16px;
-    transition: all 0.35s;
+    transition: all 0.3s;
 }
 
 .objective-item:hover {
@@ -292,24 +300,26 @@
 .objective-number {
     font-size: 2.25rem;
     font-weight: 900;
-    color: #0ea5e9;
-    opacity: 0.35;
+    color: #0ea5e9 !important;
+    opacity: 1 !important;
     font-family: 'Roboto Mono', monospace;
     flex-shrink: 0;
 }
 
 .objective-content h5 {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #f8fafc;
+    color: #ffffff !important;
     margin-bottom: 0.6rem;
+    opacity: 1 !important;
 }
 
 .objective-content p {
-    font-size: 0.9375rem;
-    color: #cbd5e1;
+    font-size: 0.975rem;
+    color: #e2e8f0 !important;
     line-height: 1.7;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
 /* ─── ACHIEVEMENTS ───────────────────────────────────── */
@@ -332,27 +342,27 @@
     background: rgba(14, 165, 233, 0.05);
     border-color: #0ea5e9;
     transform: scale(1.04);
-    box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
 }
 
 .achievement-badge {
     font-size: 2.75rem;
     margin-bottom: 1rem;
-    filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.3));
 }
 
 .achievement-card h4 {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #f8fafc;
+    color: #ffffff !important;
     margin-bottom: 0.6rem;
+    opacity: 1 !important;
 }
 
 .achievement-card p {
-    font-size: 0.9rem;
-    color: #cbd5e1;
+    font-size: 0.95rem;
+    color: #e2e8f0 !important;
     line-height: 1.6;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
 /* ─── TECH STACK ─────────────────────────────────────── */
@@ -372,10 +382,11 @@
 .tech-category-dark h4 {
     font-size: 1.05rem;
     font-weight: 700;
-    color: #38bdf8;
+    color: #38bdf8 !important;
     margin-bottom: 1.2rem;
     padding-left: 0.75rem;
     border-left: 3px solid #0ea5e9;
+    opacity: 1 !important;
 }
 
 .tech-tags-dark {
@@ -387,49 +398,52 @@
 .tech-tag-dark {
     padding: 0.5rem 1rem;
     background: rgba(14, 165, 233, 0.08);
-    border: 1px solid rgba(14, 165, 233, 0.2);
+    border: 1px solid rgba(14, 165, 233, 0.22);
     border-radius: 8px;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #cbd5e1;
+    color: #e2e8f0 !important;
     transition: all 0.25s;
     cursor: default;
     font-family: 'Roboto Mono', monospace;
+    opacity: 1 !important;
 }
 
 .tech-tag-dark:hover {
     background: #0ea5e9;
-    color: #020617;
+    color: #020617 !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
 }
 
-/* ─── MISSION CARD ───────────────────────────────────── */
+/* ─── MISSION ────────────────────────────────────────── */
 .mission-card {
-    background: linear-gradient(135deg, #0f172a, rgba(14, 165, 233, 0.04));
-    border: 2px solid #0ea5e9;
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 2px solid #0ea5e9 !important;
     border-radius: 20px;
     padding: 3rem;
     box-shadow: 0 0 24px rgba(14, 165, 233, 0.15);
 }
 
 .mission-content h3 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #f8fafc;
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    color: #38bdf8 !important;
     text-align: center;
     margin-bottom: 1.5rem;
-    padding-left: 1.2rem;
+    padding-left: 1.1rem;
     border-left: 4px solid #38bdf8;
+    opacity: 1 !important;
 }
 
 .mission-text {
     font-size: 1.1rem;
-    color: #cbd5e1;
+    color: #e2e8f0 !important;
     line-height: 1.9;
     text-align: center;
     margin-bottom: 2.4rem;
     font-weight: 500;
+    opacity: 1 !important;
 }
 
 .mission-stats {
@@ -442,7 +456,7 @@
     text-align: center;
     padding: 1.5rem;
     background: rgba(14, 165, 233, 0.06);
-    border: 1px solid rgba(14, 165, 233, 0.15);
+    border: 1px solid rgba(14, 165, 233, 0.18);
     border-radius: 12px;
 }
 
@@ -450,21 +464,23 @@
     display: block;
     font-size: 2.75rem;
     font-weight: 900;
-    color: #38bdf8;
+    color: #38bdf8 !important;
     margin-bottom: 0.4rem;
     font-family: 'Roboto Mono', monospace;
+    opacity: 1 !important;
 }
 
 .stat-label {
-    font-size: 0.9rem;
-    color: #cbd5e1;
+    font-size: 0.95rem;
+    color: #e2e8f0 !important;
     font-weight: 600;
+    opacity: 1 !important;
 }
 
 /* ─── CONTACT ────────────────────────────────────────── */
 .contact-card-dark {
-    background: #0f172a;
-    border: 1px solid #1e293b;
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid #334155 !important;
     border-radius: 20px;
     padding: 2.4rem;
 }
@@ -483,19 +499,19 @@
     background: rgba(14, 165, 233, 0.08);
     border: 2px solid #0ea5e9;
     border-radius: 12px;
-    color: #f8fafc;
+    color: #f1f5f9 !important;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.05rem;
     transition: all 0.3s;
-    box-shadow: 0 0 16px rgba(14, 165, 233, 0.15);
+    opacity: 1 !important;
 }
 
 .contact-link-dark:hover {
     background: #0ea5e9;
-    color: #020617;
+    color: #020617 !important;
     transform: translateX(8px);
-    box-shadow: 0 0 28px rgba(14, 165, 233, 0.45);
+    box-shadow: 0 0 24px rgba(14, 165, 233, 0.45);
 }
 
 .link-icon {

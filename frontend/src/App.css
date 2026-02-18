@@ -1,4 +1,4 @@
-/* App Layout - High Contrast Hydrological */
+/* App Layout — Maximum Text Clarity */
 
 .app {
     min-height: 100vh;
@@ -9,17 +9,30 @@
 
 /* ─── HEADER ─────────────────────────────────────────── */
 .app-header {
-    background: rgba(15, 23, 42, 0.92);
+    background: rgba(15, 23, 42, 0.97);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid #1e293b;
+    border-bottom: 1px solid #334155;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 24px rgba(2, 6, 23, 0.8);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
+    animation: slideDown 0.4s ease-out;
 }
 
-/* Animated water line at bottom of header */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Water line */
 .app-header::after {
     content: '';
     position: absolute;
@@ -27,11 +40,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg,
-            transparent 0%,
-            #0ea5e9 30%,
-            #2dd4bf 70%,
-            transparent 100%);
+    background: linear-gradient(90deg, transparent, #0ea5e9, #2dd4bf, transparent);
     animation: water-line 4s ease-in-out infinite;
 }
 
@@ -39,37 +48,36 @@
 
     0%,
     100% {
-        opacity: 0.4;
-        transform: scaleX(0.8);
+        opacity: 0.5;
     }
 
     50% {
         opacity: 1;
-        transform: scaleX(1);
     }
 }
 
-/* ─── NAVIGATION ─────────────────────────────────────── */
+/* ─── NAV LINKS ──────────────────────────────────────── */
 .nav-link {
-    color: #cbd5e1;
+    color: #e2e8f0 !important;
+    /* bright — NOT muted */
     text-decoration: none;
     padding: 0.6rem 1.2rem;
     border-radius: 10px;
     font-weight: 600;
-    font-size: 0.9375rem;
-    transition: all 0.25s ease;
-    position: relative;
+    font-size: 0.975rem;
+    transition: all 0.25s;
+    opacity: 1 !important;
 }
 
 .nav-link:hover {
-    color: #38bdf8;
-    background: rgba(14, 165, 233, 0.1);
+    color: #38bdf8 !important;
+    background: rgba(14, 165, 233, 0.12);
     transform: translateY(-1px);
 }
 
 .nav-link.active {
-    color: #38bdf8;
-    background: rgba(14, 165, 233, 0.12);
+    color: #38bdf8 !important;
+    background: rgba(14, 165, 233, 0.14);
 }
 
 /* ─── MAIN CONTENT ───────────────────────────────────── */
@@ -81,9 +89,9 @@
 
 /* ─── FOOTER ─────────────────────────────────────────── */
 .app-footer {
-    background: rgba(15, 23, 42, 0.92);
+    background: rgba(15, 23, 42, 0.97);
     backdrop-filter: blur(20px);
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #334155;
     margin-top: auto;
     position: relative;
 }
@@ -95,16 +103,16 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg,
-            transparent, #0ea5e9, #2dd4bf, transparent);
+    background: linear-gradient(90deg, transparent, #0ea5e9, #2dd4bf, transparent);
     animation: water-line 4s ease-in-out infinite reverse;
 }
 
 .footer-link {
-    color: #38bdf8;
+    color: #38bdf8 !important;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.25s;
+    opacity: 1 !important;
     position: relative;
 }
 
@@ -124,7 +132,13 @@
 }
 
 .footer-link:hover {
-    color: #2dd4bf;
+    color: #2dd4bf !important;
+}
+
+/* Footer text */
+.app-footer p {
+    color: #cbd5e1 !important;
+    opacity: 1 !important;
 }
 
 /* ─── UTILITY CLASSES ────────────────────────────────── */
@@ -173,7 +187,8 @@
 }
 
 .text-2xl {
-    font-size: 1.5rem;
+    font-size: 1.65rem;
+    font-weight: 700;
 }
 
 .font-bold {
@@ -181,15 +196,17 @@
 }
 
 .text-white {
-    color: #f8fafc;
+    color: #f1f5f9 !important;
+    opacity: 1 !important;
 }
 
 .text-sm {
-    font-size: 0.875rem;
+    font-size: 0.9625rem;
 }
 
 .text-blue-200 {
-    color: #cbd5e1;
+    color: #e2e8f0 !important;
+    opacity: 1 !important;
 }
 
 .hidden {
@@ -201,28 +218,12 @@
 }
 
 .text-gray-600 {
-    color: #94a3b8;
+    color: #cbd5e1 !important;
+    opacity: 1 !important;
 }
 
 @media (min-width: 768px) {
     .md\\:block {
         display: block;
     }
-}
-
-/* Header slide-in */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.app-header {
-    animation: slideDown 0.4s ease-out;
 }
