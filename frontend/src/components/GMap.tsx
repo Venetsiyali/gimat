@@ -221,26 +221,35 @@ const GMap: React.FC<GoogleMapProps> = ({ stations, selectedStation, onStationSe
             }}>
                 🗺️ O'zbekiston Gidropost Tarmog'i — {stations.length} ta stansiya
             </div>
-            {/* Legend */}
+            {/* Legend — Google Maps style */}
             <div style={{
                 position: 'absolute',
                 bottom: '2.5rem',
                 left: '1rem',
-                background: 'rgba(10, 22, 40, 0.92)',
-                border: '1px solid #1E293B',
-                borderRadius: '8px',
-                padding: '0.6rem 1rem',
+                background: '#0F172A',
+                border: '1px solid #1E3A5F',
+                borderRadius: '10px',
+                padding: '0.75rem 1.1rem',
                 display: 'flex',
-                gap: '1rem',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                color: '#CBD5E1',
-                fontFamily: 'Inter, system-ui, sans-serif',
+                flexDirection: 'column',
+                gap: '0.5rem',
                 zIndex: 10,
+                boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+                fontFamily: 'Inter, system-ui, sans-serif',
             }}>
-                <span>🟢 Xavfsiz</span>
-                <span>🟡 Diqqat</span>
-                <span>🔴 Kritik</span>
+                <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.15rem' }}>Holat</div>
+                {[
+                    { color: '#10B981', label: 'Xavfsiz  (≤ 3m)' },
+                    { color: '#F59E0B', label: 'Diqqat   (3–4m)' },
+                    { color: '#EF4444', label: 'Kritik   (> 4m)' },
+                ].map(({ color, label }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                        <svg width="14" height="14" viewBox="0 0 14 14">
+                            <circle cx="7" cy="7" r="6" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
+                        </svg>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap' }}>{label}</span>
+                    </div>
+                ))}
             </div>
         </div>
     );

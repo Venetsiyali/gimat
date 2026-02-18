@@ -153,6 +153,20 @@ const Dashboard: React.FC = () => {
                 )}
             </div>
 
+            {/* ── AI TECHNOLOGY BADGE STRIP ───────────────── */}
+            <div className="fh-badge-strip">
+                <span className="fh-badge-strip-label">🧠 AI Texnologiyalar:</span>
+                <div className="fh-badge-strip-badges">
+                    <span className="hc-badge hc-badge-preprocessing">Wavelet</span>
+                    <span className="hc-badge hc-badge-preprocessing">SARIMA</span>
+                    <span className="hc-badge hc-badge-ai">Bi-LSTM</span>
+                    <span className="hc-badge hc-badge-ai">GNN</span>
+                    <span className="hc-badge hc-badge-analytics">XAI</span>
+                    <span className="hc-badge hc-badge-analytics">RAG</span>
+                    <span className="hc-badge hc-badge-database">Neo4j</span>
+                </div>
+            </div>
+
             {/* ── MAIN AREA: MAP + SIDE PANEL ────────────── */}
             <div className="fh-main-area">
 
