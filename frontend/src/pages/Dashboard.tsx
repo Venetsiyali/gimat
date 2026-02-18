@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { dataAPI } from '../services/api';
 import { MetricCard, TimeSeriesChart } from '../components/Charts';
+import GMap from '../components/GMap';
 import '../components/MetricCard.css';
 import './Dashboard.css';
 
@@ -106,23 +107,6 @@ const Dashboard: React.FC = () => {
         } catch (error) {
             console.error('Error loading historical data:', error);
         }
-    };
-
-    /* Determine marker status color */
-    const getMarkerStatus = (station: Station) => {
-        if (!latestData || station.station_id !== selectedStation) return '#10B981'; // green
-        const wl = latestData.water_level;
-        if (wl > 4.0) return '#EF4444'; // critical red
-        if (wl > 3.0) return '#F59E0B'; // warning amber
-        return '#10B981'; // safe green
-    };
-
-    /* Generate SVG marker positions from lat/lon */
-    const getMarkerXY = (lat: number, lon: number) => {
-        // Uzbekistan approx bounds: lat 37–42, lon 56–73
-        const x = ((lon - 56) / (73 - 56)) * 100;
-        const y = ((42 - lat) / (42 - 37)) * 100;
-        return { x: Math.max(5, Math.min(95, x)), y: Math.max(5, Math.min(95, y)) };
     };
 
     if (loading) {
@@ -243,94 +227,15 @@ const Dashboard: React.FC = () => {
                     </button>
                 </aside>
 
-                {/* MAP AREA */}
+                {/* MAP AREA — Google Maps */}
                 <div className="fh-map-area">
                     <div className="fh-map-container">
-                        {/* SVG interactive map of Uzbekistan */}
-                        <svg
-                            viewBox="0 0 100 100"
-                            className="fh-map-svg"
-                            preserveAspectRatio="xMidYMid meet"
-                        >
-                            {/* Background grid */}
-                            <defs>
-                                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#1E293B" strokeWidth="0.3" />
-                                </pattern>
-                            </defs>
-                            <rect width="100" height="100" fill="#0A1628" />
-                            <rect width="100" height="100" fill="url(#grid)" />
-
-                            {/* Uzbekistan simplified outline */}
-                            <path
-                                d="M 15,30 L 25,20 L 45,18 L 60,22 L 75,18 L 88,25 L 90,38 L 82,50 L 75,55 L 65,60 L 55,65 L 45,70 L 35,72 L 22,68 L 12,58 L 10,45 Z"
-                                fill="#0F2040"
-                                stroke="#1E3A5F"
-                                strokeWidth="0.8"
-                            />
-
-                            {/* River lines */}
-                            <path d="M 30,25 Q 45,40 55,55 Q 60,62 65,68" fill="none" stroke="#0EA5E9" strokeWidth="0.6" opacity="0.7" />
-                            <path d="M 60,22 Q 65,35 70,50 Q 72,58 68,65" fill="none" stroke="#0EA5E9" strokeWidth="0.5" opacity="0.6" />
-                            <path d="M 20,40 Q 35,45 50,48 Q 62,50 75,48" fill="none" stroke="#0EA5E9" strokeWidth="0.5" opacity="0.5" />
-
-                            {/* Station markers */}
-                            {stations.map((station, i) => {
-                                const pos = station.latitude && station.longitude
-                                    ? getMarkerXY(station.latitude, station.longitude)
-                                    : { x: 20 + (i * 15) % 60, y: 30 + (i * 12) % 40 };
-                                const color = getMarkerStatus(station);
-                                const isSelected = station.station_id === selectedStation;
-                                return (
-                                    <g
-                                        key={station.station_id}
-                                        onClick={() => setSelectedStation(station.station_id)}
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {/* Pulse ring for selected */}
-                                        {isSelected && (
-                                            <circle cx={pos.x} cy={pos.y} r="4" fill="none" stroke={color} strokeWidth="0.8" opacity="0.5">
-                                                <animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite" />
-                                                <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
-                                            </circle>
-                                        )}
-                                        {/* Marker dot */}
-                                        <circle
-                                            cx={pos.x} cy={pos.y}
-                                            r={isSelected ? 3 : 2}
-                                            fill={color}
-                                            stroke="#FFFFFF"
-                                            strokeWidth="0.5"
-                                        />
-                                        {/* Label */}
-                                        <text
-                                            x={pos.x + 3.5} y={pos.y + 1}
-                                            fontSize="2.5"
-                                            fill="#FFFFFF"
-                                            fontFamily="Inter, sans-serif"
-                                            fontWeight={isSelected ? '700' : '400'}
-                                        >
-                                            {station.station_name?.substring(0, 12)}
-                                        </text>
-                                    </g>
-                                );
-                            })}
-
-                            {/* Legend */}
-                            <g transform="translate(2, 85)">
-                                <circle cx="2" cy="2" r="1.5" fill="#10B981" />
-                                <text x="5" y="3" fontSize="2.2" fill="#CBD5E1" fontFamily="Inter, sans-serif">Xavfsiz</text>
-                                <circle cx="20" cy="2" r="1.5" fill="#F59E0B" />
-                                <text x="23" y="3" fontSize="2.2" fill="#CBD5E1" fontFamily="Inter, sans-serif">Diqqat</text>
-                                <circle cx="38" cy="2" r="1.5" fill="#EF4444" />
-                                <text x="41" y="3" fontSize="2.2" fill="#CBD5E1" fontFamily="Inter, sans-serif">Kritik</text>
-                            </g>
-                        </svg>
-
-                        {/* Map overlay label */}
-                        <div className="fh-map-label">
-                            🗺️ O'zbekiston Gidropost Tarmog'i — {stations.length} ta stansiya
-                        </div>
+                        <GMap
+                            stations={stations}
+                            selectedStation={selectedStation}
+                            onStationSelect={setSelectedStation}
+                            waterLevel={latestData?.water_level}
+                        />
                     </div>
                 </div>
             </div>
