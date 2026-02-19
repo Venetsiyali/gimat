@@ -18,7 +18,7 @@ import { ontologyAPI } from '../services/api';
 interface NetworkNode {
     id: string;
     label: string;
-    type: string; // 'hydropost' | 'river'
+    type: string;
     data: any;
 }
 
@@ -32,12 +32,12 @@ interface NetworkEdge {
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => {
+const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'LR') => {
     const isHorizontal = direction === 'LR';
     dagreGraph.setGraph({ rankdir: direction });
 
     nodes.forEach((node) => {
-        dagreGraph.setNode(node.id, { width: 180, height: 80 }); // Assumed node size
+        dagreGraph.setNode(node.id, { width: 180, height: 60 });
     });
 
     edges.forEach((edge) => {
@@ -50,10 +50,9 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => 
         const nodeWithPosition = dagreGraph.node(node.id);
         node.targetPosition = isHorizontal ? Position.Left : Position.Top;
         node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
-        // Adjust position to center it slightly better
         node.position = {
             x: nodeWithPosition.x - 90,
-            y: nodeWithPosition.y - 40,
+            y: nodeWithPosition.y - 30,
         };
     });
 
@@ -69,10 +68,8 @@ const NetworkView: React.FC = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-    // RAG Explorer State
+    // Sidebar State
     const [selectedNode, setSelectedNode] = useState<any>(null);
-    const [ragLoading, setRagLoading] = useState(false);
-    const [relatedNodes, setRelatedNodes] = useState<any[]>([]);
 
     useEffect(() => {
         loadNetwork();
@@ -85,21 +82,24 @@ const NetworkView: React.FC = () => {
             const response = await ontologyAPI.getNetwork(selectedRiver);
             const apiData = response.data;
 
-            // Transform API data to React Flow format
+            // Transform API data to React Flow
+            // Styling for "Neon-Cyan" scientific look
             const initialNodes: Node[] = apiData.nodes.map((n: NetworkNode) => ({
                 id: n.id,
-                type: 'default', // Using default for now, can be custom
+                type: 'default',
                 data: { label: n.label, ...n.data },
-                position: { x: 0, y: 0 }, // Layout will set this
+                position: { x: 0, y: 0 },
                 style: {
-                    background: '#1E293B',
-                    color: '#FFF',
-                    border: '1px solid #3B82F6',
+                    background: '#0F172A', // Slate 900
+                    color: '#22D3EE',      // Cyan 400
+                    border: '1px solid #06B6D4', // Cyan 500
                     borderRadius: '8px',
-                    padding: '10px',
+                    padding: '12px',
                     width: 180,
-                    fontSize: '12px',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    boxShadow: '0 0 10px rgba(34, 211, 238, 0.2)',
+                    textAlign: 'center'
                 },
             }));
 
@@ -109,192 +109,199 @@ const NetworkView: React.FC = () => {
                 target: e.target,
                 type: 'smoothstep',
                 animated: true,
-                label: e.label || 'FLOWS_TO',
-                style: { stroke: '#3B82F6', strokeWidth: 2 },
-                markerEnd: { type: MarkerType.ArrowClosed, color: '#3B82F6' },
-                labelStyle: { fill: '#94A3B8', fontSize: 10 }
+                label: e.label || 'Oqim',
+                style: { stroke: '#22D3EE', strokeWidth: 2 },
+                labelStyle: { fill: '#94A3B8', fontSize: 11 },
+                markerEnd: { type: MarkerType.ArrowClosed, color: '#22D3EE' },
             }));
 
             const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
                 initialNodes,
                 initialEdges,
-                'TB' // Top-to-Bottom flow
+                'TB' // Top-to-Bottom hierarchy
             );
 
             setNodes(layoutedNodes);
             setEdges(layoutedEdges);
             setLoading(false);
+
+            // Generate overview stats for default selection
+            setSelectedNode(null);
+
         } catch (error) {
             console.error('Error loading network:', error);
             setLoading(false);
         }
     };
 
-    const onNodeClick = useCallback(async (_event: React.MouseEvent, node: Node) => {
+    const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
         setSelectedNode(node);
-        setRagLoading(true);
-        try {
-            // Mocking semantic relationship fetch for now (would use ontologyAPI in real scenario)
-            // In a real implementation, you might call: await ontologyAPI.getRelated(node.id)
-
-            // Simulating fetch delay
-            setTimeout(() => {
-                // Here we would filter the original graph data or fetch from backend
-                // For this demo, let's just show some static "intelligent" insights
-                setRelatedNodes([
-                    { relation: 'UPSTREAM', target: 'Chorvoq suv ombori', distance: '12 km' },
-                    { relation: 'DOWNSTREAM', target: 'G\'azalkent GES', distance: '8 km' },
-                    { relation: 'INFLUENCES', target: 'Sug\'orish tizimi', impact: 'High' }
-                ]);
-                setRagLoading(false);
-            }, 500);
-
-        } catch (error) {
-            console.error(error);
-            setRagLoading(false);
-        }
     }, []);
 
-    // Layout style for the scientific look
+    // Layout scientific dark theme
     const pageStyle: React.CSSProperties = {
-        background: '#0F172A',
-        minHeight: 'calc(100vh - 64px)',
+        background: '#020617', // Very dark slate
+        height: 'calc(100vh - 64px)',
         color: '#E2E8F0',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'row', // Left Sidebar, Right Map
+        overflow: 'hidden'
     };
 
     return (
         <div style={pageStyle}>
-            {/* Header */}
-            <div className="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-900">
-                <div>
-                    <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
-                        Gidrologik Topologiya va Semantik Bog‘liqliklar
-                    </h1>
-                    <p className="text-xs text-slate-400">Iyerarxik Oqim Sxemasi (Flow Schema)</p>
+            {/* --- LEFT SIDEBAR (25%) --- */}
+            <div className="w-1/4 h-full border-r border-slate-800 bg-slate-900/95 flex flex-col z-20 shadow-xl">
+                {/* Sidebar Header */}
+                <div className="p-5 border-b border-slate-800">
+                    <h2 className="text-lg font-bold text-cyan-400 flex items-center gap-2 mb-1">
+                        <span>🧠</span> Intellektual Explorer
+                    </h2>
+                    <p className="text-xs text-slate-500">Gidrologik obyektlar tahlili</p>
                 </div>
-                <div className="flex items-center gap-4">
+
+                {/* River Selector */}
+                <div className="p-5 border-b border-slate-800">
+                    <label className="text-xs font-semibold text-slate-400 uppercase mb-2 block">Daryo Havzasi</label>
                     <select
-                        className="bg-slate-800 border border-slate-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        className="w-full bg-slate-800 border border-slate-700 text-cyan-300 text-sm rounded-md p-2.5 focus:ring-1 focus:ring-cyan-500 outline-none transition-all"
                         value={selectedRiver}
                         onChange={(e) => setSelectedRiver(e.target.value)}
                     >
+                        <option value="">Daryo tanlang...</option>
                         <option value="Chirchiq">Chirchiq Daryosi</option>
                         <option value="Zarafshon">Zarafshon Daryosi</option>
                     </select>
                 </div>
-            </div>
 
-            <div className="flex flex-1 overflow-hidden relative">
-                {/* Main: Flow Schema */}
-                <div className="flex-1 relative border-r border-slate-700">
-                    {loading ? (
-                        <div className="flex items-center justify-center h-full">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                {/* Sidebar Content */}
+                <div className="flex-1 overflow-y-auto p-5">
+                    {!selectedNode ? (
+                        <div className="text-center py-10 opacity-60">
+                            <div className="text-4xl mb-3">📍</div>
+                            <p className="text-sm text-slate-400">Sxemadan biror stansiyani tanlang</p>
+                            <p className="text-xs text-slate-600 mt-2">Daryo oqimi bo'ylab joylashgan tugunlar ustiga bosing.</p>
                         </div>
                     ) : (
-                        <ReactFlow
-                            nodes={nodes}
-                            edges={edges}
-                            onNodesChange={onNodesChange}
-                            onEdgesChange={onEdgesChange}
-                            onNodeClick={onNodeClick}
-                            connectionLineType={ConnectionLineType.SmoothStep}
-                            fitView
-                            attributionPosition="bottom-left"
-                            nodesDraggable={false} // Lock structure for scientific view
-                        >
-                            <Controls style={{ fill: '#fff' }} />
-                            <Background color="#334155" gap={16} />
-                        </ReactFlow>
+                        <div className="animate-fade-in space-y-6">
+                            {/* Card: Station Info */}
+                            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 shadow-lg backdrop-blur-sm relative overflow-hidden group">
+                                <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500"></div>
+                                <h3 className="text-xl font-bold text-white mb-1">{selectedNode.data.label}</h3>
+                                <div className="flex items-center gap-2 text-xs text-cyan-300 font-mono mb-3">
+                                    <span>ID: {selectedNode.id}</span>
+                                    <span>•</span>
+                                    <span>{selectedRiver}</span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3 mt-4">
+                                    <div className="bg-slate-900/80 p-2 rounded border border-slate-700/50">
+                                        <span className="text-[10px] text-slate-500 uppercase block">Lat</span>
+                                        <span className="text-sm font-mono text-slate-200">41.6523</span>
+                                    </div>
+                                    <div className="bg-slate-900/80 p-2 rounded border border-slate-700/50">
+                                        <span className="text-[10px] text-slate-500 uppercase block">Long</span>
+                                        <span className="text-sm font-mono text-slate-200">69.8401</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Card: Live Stats */}
+                            <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4">
+                                <h4 className="text-xs font-bold text-slate-400 uppercase mb-3 flex items-center gap-2">
+                                    <span>📊</span> Statistika
+                                </h4>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-center pb-2 border-b border-slate-800/50">
+                                        <span className="text-sm text-slate-400">Suv Sathi (H)</span>
+                                        <span className="text-base font-bold text-cyan-400">2.45 m</span>
+                                    </div>
+                                    <div className="flex justify-between items-center pb-2 border-b border-slate-800/50">
+                                        <span className="text-sm text-slate-400">Suv Sarfi (Q)</span>
+                                        <span className="text-base font-bold text-blue-400">145 m³/s</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm text-slate-400">Harorat (T)</span>
+                                        <span className="text-base font-bold text-yellow-500">14.2 °C</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Card: Semantic Info */}
+                            <div className="p-3 bg-cyan-900/10 border border-cyan-800/30 rounded-lg">
+                                <p className="text-xs text-cyan-200/80 italic leading-relaxed">
+                                    "Ushbu gidropost <strong>{selectedRiver}</strong> havzasining yuqori qismida joylashgan bo'lib, quyi oqimdagi suv omborlariga bevosita ta'sir ko'rsatadi."
+                                </p>
+                            </div>
+                        </div>
                     )}
-                    <div className="absolute top-4 left-4 bg-slate-800/80 backdrop-blur-sm p-3 rounded border border-slate-600 z-10">
-                        <div className="flex items-center gap-2 mb-1">
-                            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                            <span className="text-xs text-slate-300">Gidropost</span>
+                </div>
+
+                {/* Footer Info */}
+                <div className="p-4 border-t border-slate-800 text-[10px] text-slate-600 text-center">
+                    Gidrologik Monitoring Tizimi v2.0
+                </div>
+            </div>
+
+            {/* --- RIGHT MAIN AREA (75%) --- */}
+            <div className="w-3/4 h-full relative bg-slate-950">
+                {/* Map overlay header */}
+                <div className="absolute top-4 left-4 z-10">
+                    <h1 className="text-2xl font-bold text-white tracking-tight">
+                        Gidrologik Oqim Sxemasi
+                    </h1>
+                    <p className="text-sm text-slate-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                        Real vaqt rejimida
+                    </p>
+                </div>
+
+                {/* Legend */}
+                <div className="absolute bottom-6 right-6 z-10 bg-slate-900/90 backdrop-blur border border-slate-700 p-3 rounded-lg shadow-lg">
+                    <div className="flex items-center gap-3 text-xs text-slate-300">
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-3 h-3 rounded bg-slate-900 border border-cyan-500"></div>
+                            <span>Gidropost</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-0.5 bg-blue-500"></div>
-                            <span className="text-xs text-slate-300">Suv Oqimi</span>
+                        <div className="flex items-center gap-1.5">
+                            <div className="w-6 h-0.5 bg-cyan-500"></div>
+                            <span>Oqim</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Right: RAG Explorer */}
-                <div className="w-96 bg-slate-900 border-l border-slate-800 flex flex-col shadow-2xl z-20">
-                    <div className="p-4 border-b border-slate-800 bg-slate-800/50">
-                        <h2 className="font-bold text-blue-400 flex items-center gap-2">
-                            <span>🧠</span> Intellektual Explorer
-                        </h2>
-                        <p className="text-xs text-slate-500 mt-1">Semantik qidiruv va kontekst</p>
+                {loading ? (
+                    <div className="flex items-center justify-center h-full">
+                        <div className="flex flex-col items-center gap-3">
+                            <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+                            <span className="text-sm text-cyan-500 font-mono">Ma'lumotlar yuklanmoqda...</span>
+                        </div>
                     </div>
-
-                    <div className="p-4 flex-1 overflow-y-auto">
-                        {!selectedNode ? (
-                            <div className="text-center py-10 text-slate-500">
-                                <p className="mb-2">Biror tugunni (stansiya) tanlang</p>
-                                <p className="text-xs">Ontologik bog‘liqliklarni ko‘rish uchun sxemadagi obyekt ustiga bosing.</p>
-                            </div>
-                        ) : (
-                            <div className="animate-fade-in">
-                                <div className="mb-6">
-                                    <h3 className="text-lg font-bold text-white mb-1">{selectedNode.data.label}</h3>
-                                    <span className="px-2 py-0.5 rounded text-xs bg-blue-900 text-blue-200 border border-blue-700">
-                                        ID: {selectedNode.id}
-                                    </span>
-                                </div>
-
-                                {/* Live Data Placeholder */}
-                                <div className="bg-slate-800 rounded-lg p-3 mb-6 border border-slate-700">
-                                    <h4 className="text-xs font-semibold text-slate-400 uppercase mb-3">Joriy Ko'rsatkichlar</h4>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <p className="text-xs text-slate-500">Suv Sathi (H)</p>
-                                            <p className="text-lg font-mono text-cyan-400">2.45 <span className="text-xs">m</span></p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs text-slate-500">Suv Sarfi (Q)</p>
-                                            <p className="text-lg font-mono text-cyan-400">145.2 <span className="text-xs">m³/s</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* RAG Insights (Semantic Graph) */}
-                                <div>
-                                    <h4 className="text-xs font-semibold text-slate-400 uppercase mb-3 flex justify-between">
-                                        <span>Qo'shni Tugunlar (Graph)</span>
-                                        {ragLoading && <span className="animate-pulse">Yuklanmoqda...</span>}
-                                    </h4>
-
-                                    <div className="space-y-2">
-                                        {relatedNodes.map((rel, idx) => (
-                                            <div key={idx} className="bg-slate-800/40 p-3 rounded border border-slate-700 hover:border-slate-500 transition-colors cursor-pointer group">
-                                                <div className="flex justify-between items-start mb-1">
-                                                    <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded 
-                                                        ${rel.relation === 'UPSTREAM' ? 'bg-indigo-900/50 text-indigo-300' :
-                                                            rel.relation === 'DOWNSTREAM' ? 'bg-emerald-900/50 text-emerald-300' : 'bg-slate-700 text-slate-300'}`}>
-                                                        {rel.relation}
-                                                    </span>
-                                                    <span className="text-xs text-slate-500 font-mono">{rel.distance || rel.impact}</span>
-                                                </div>
-                                                <div className="text-sm font-medium text-slate-200 group-hover:text-blue-400 transition-colors">
-                                                    {rel.target}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <div className="mt-6 p-3 bg-blue-900/20 border border-blue-800/50 rounded">
-                                        <p className="text-xs text-blue-200 italic">
-                                            "Bu stansiya Chirchiq daryosining o'rta oqimida joylashgan bo'lib, G'azalkent suv omboriga to'g'ridan-to'g'ri bog'liq."
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                ) : !selectedRiver ? (
+                    <div className="flex items-center justify-center h-full text-slate-500">
+                        <div className="text-center">
+                            <h3 className="text-xl font-medium text-slate-400 mb-2">Daryo tanlanmagan</h3>
+                            <p className="text-sm">Iltimos, chap paneldan daryo havzasini tanlang.</p>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <ReactFlow
+                        nodes={nodes}
+                        edges={edges}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                        onNodeClick={onNodeClick}
+                        connectionLineType={ConnectionLineType.SmoothStep}
+                        fitView
+                        attributionPosition="bottom-right"
+                        nodesDraggable={false}
+                    >
+                        <Controls
+                            style={{ background: '#1E293B', border: '1px solid #334155', fill: '#CBD5E1' }}
+                            showInteractive={false}
+                        />
+                        <Background color="#1E293B" gap={20} size={1} />
+                    </ReactFlow>
+                )}
             </div>
         </div>
     );
