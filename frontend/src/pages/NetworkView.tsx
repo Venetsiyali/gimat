@@ -284,7 +284,7 @@ const NetworkView: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex-1 w-full h-full">
+                    <div className="flex-1 w-full h-full min-h-[600px]">
                         <ReactFlow
                             nodes={nodes}
                             edges={edges}
