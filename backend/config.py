@@ -65,6 +65,8 @@ class Settings(BaseSettings):
     cors_origins: list = [
         "http://localhost:3000",
         "http://localhost:8000",
+        "https://gimat.vercel.app",
+        "https://gimat-frontend.vercel.app",
     ]
     
     # Wavelet settings
