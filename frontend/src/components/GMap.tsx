@@ -1,4 +1,15 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default marker icon in React-Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 interface Station {
     station_id: string;
@@ -8,223 +19,131 @@ interface Station {
     longitude: number;
 }
 
-interface GoogleMapProps {
+interface LeafletMapProps {
     stations: Station[];
     selectedStation: string;
     onStationSelect: (stationId: string) => void;
     waterLevel?: number;
 }
 
-/* Determine marker color based on water level */
-const getMarkerColor = (stationId: string, selectedStation: string, waterLevel?: number): string => {
-    if (stationId !== selectedStation) return '#10B981'; // green — default
-    if (!waterLevel) return '#10B981';
-    if (waterLevel > 4.0) return '#EF4444'; // critical red
-    if (waterLevel > 3.0) return '#F59E0B'; // warning amber
-    return '#10B981'; // safe green
+/* Custom Marker Icons based on status */
+const createCustomIcon = (color: string, isSelected: boolean) => {
+    return L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="
+            background-color: ${color};
+            width: ${isSelected ? '24px' : '16px'};
+            height: ${isSelected ? '24px' : '16px'};
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        "></div>`,
+        iconSize: [isSelected ? 24 : 16, isSelected ? 24 : 16],
+        iconAnchor: [isSelected ? 12 : 8, isSelected ? 12 : 8],
+        popupAnchor: [0, isSelected ? -12 : -8],
+    });
 };
 
-/* Dark map style matching Deep Blue design */
-const DARK_MAP_STYLE = [
-    { elementType: 'geometry', stylers: [{ color: '#0A1628' }] },
-    { elementType: 'labels.text.stroke', stylers: [{ color: '#0A1628' }] },
-    { elementType: 'labels.text.fill', stylers: [{ color: '#CBD5E1' }] },
-    { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#1E3A5F' }] },
-    { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: '#64748B' }] },
-    { featureType: 'landscape.natural', elementType: 'geometry', stylers: [{ color: '#0F172A' }] },
-    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#0F172A' }] },
-    { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#64748B' }] },
-    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#052E16' }] },
-    { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#10B981' }] },
-    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1E293B' }] },
-    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#0F172A' }] },
-    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#94A3B8' }] },
-    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#1E3A5F' }] },
-    { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#0A1628' }] },
-    { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#CBD5E1' }] },
-    { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#0F172A' }] },
-    { featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{ color: '#64748B' }] },
-    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0C2340' }] },
-    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#38BDF8' }] },
-    { featureType: 'water', elementType: 'labels.text.stroke', stylers: [{ color: '#0A1628' }] },
-];
+/* Component to handle map interactions like panning */
+const MapUpdater: React.FC<{ center: [number, number], zoom: number }> = ({ center, zoom }) => {
+    const map = useMap();
+    useEffect(() => {
+        map.setView(center, zoom);
+    }, [center, zoom, map]);
+    return null;
+};
 
-declare global {
-    interface Window {
-        google: any;
-    }
-}
+const GMap: React.FC<LeafletMapProps> = ({ stations, selectedStation, onStationSelect, waterLevel }) => {
+    const [mapCenter, setMapCenter] = useState<[number, number]>([41.2995, 66.2401]); // Center roughly on Uzbekistan
+    const [zoomLevel, setZoomLevel] = useState(6);
 
-const GMap: React.FC<GoogleMapProps> = ({ stations, selectedStation, onStationSelect, waterLevel }) => {
-    const mapRef = useRef<HTMLDivElement>(null);
-    const mapInstanceRef = useRef<any>(null);
-    const markersRef = useRef<any[]>([]);
-    const infoWindowRef = useRef<any>(null);
-
-    const initMap = useCallback(() => {
-        if (!mapRef.current || !window.google) return;
-
-        const map = new window.google.maps.Map(mapRef.current, {
-            center: { lat: 41.2995, lng: 63.2401 }, // O'zbekiston markazi
-            zoom: 6,
-            styles: DARK_MAP_STYLE,
-            disableDefaultUI: false,
-            zoomControl: true,
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: true,
-            backgroundColor: '#0A1628',
-        });
-
-        mapInstanceRef.current = map;
-        infoWindowRef.current = new window.google.maps.InfoWindow();
-
-        // Add markers for each station
-        stations.forEach(station => {
-            if (!station.latitude || !station.longitude) return;
-
-            const color = getMarkerColor(station.station_id, selectedStation, waterLevel);
-            const isSelected = station.station_id === selectedStation;
-
-            const marker = new window.google.maps.Marker({
-                position: { lat: station.latitude, lng: station.longitude },
-                map,
-                title: station.station_name,
-                icon: {
-                    path: window.google.maps.SymbolPath.CIRCLE,
-                    scale: isSelected ? 12 : 8,
-                    fillColor: color,
-                    fillOpacity: 1,
-                    strokeColor: '#FFFFFF',
-                    strokeWeight: isSelected ? 2.5 : 1.5,
-                },
-                animation: isSelected ? window.google.maps.Animation.BOUNCE : null,
-                zIndex: isSelected ? 100 : 1,
-            });
-
-            marker.addListener('click', () => {
-                onStationSelect(station.station_id);
-
-                const wl = waterLevel && station.station_id === selectedStation ? waterLevel : null;
-                const statusText = wl
-                    ? wl > 4 ? '🔴 Kritik' : wl > 3 ? '🟡 Diqqat' : '🟢 Xavfsiz'
-                    : '🟢 Xavfsiz';
-
-                infoWindowRef.current.setContent(`
-                    <div style="
-                        background: #0F172A;
-                        color: #FFFFFF;
-                        padding: 12px 16px;
-                        border-radius: 8px;
-                        font-family: Inter, system-ui, sans-serif;
-                        min-width: 200px;
-                        border: 1px solid #1E293B;
-                    ">
-                        <div style="font-size: 1rem; font-weight: 700; color: #38BDF8; margin-bottom: 6px;">
-                            📍 ${station.station_name}
-                        </div>
-                        <div style="font-size: 0.85rem; color: #CBD5E1; margin-bottom: 4px;">
-                            🌊 Daryo: <strong style="color:#FFFFFF">${station.river_name}</strong>
-                        </div>
-                        <div style="font-size: 0.85rem; color: #CBD5E1; margin-bottom: 8px;">
-                            📍 ${station.latitude.toFixed(4)}°N, ${station.longitude.toFixed(4)}°E
-                        </div>
-                        <div style="
-                            display: inline-block;
-                            padding: 3px 10px;
-                            border-radius: 999px;
-                            font-size: 0.8rem;
-                            font-weight: 700;
-                            background: #1E293B;
-                            color: #FFFFFF;
-                            border: 1px solid #334155;
-                        ">${statusText}</div>
-                    </div>
-                `);
-                infoWindowRef.current.open(map, marker);
-            });
-
-            markersRef.current.push(marker);
-        });
-
-        // Fit bounds to all stations
-        if (stations.length > 0) {
-            const bounds = new window.google.maps.LatLngBounds();
-            stations.forEach(s => {
-                if (s.latitude && s.longitude) {
-                    bounds.extend({ lat: s.latitude, lng: s.longitude });
-                }
-            });
-            if (!bounds.isEmpty()) {
-                map.fitBounds(bounds, { top: 40, right: 40, bottom: 40, left: 40 });
-            }
+    useEffect(() => {
+        const selected = stations.find(s => s.station_id === selectedStation);
+        if (selected && selected.latitude && selected.longitude) {
+            setMapCenter([selected.latitude, selected.longitude]);
+            setZoomLevel(10);
         }
-    }, [stations, selectedStation, waterLevel, onStationSelect]);
+    }, [selectedStation, stations]);
 
-    /* Load Google Maps Script Dynamically */
-    useEffect(() => {
-        const loadGoogleMapsScript = () => {
-            if (window.google && window.google.maps) {
-                initMap();
-                return;
-            }
+    const getStatusColor = (stationId: string) => {
+        if (stationId !== selectedStation) return '#10B981'; // Default green
+        if (!waterLevel) return '#10B981';
+        if (waterLevel > 4.0) return '#EF4444'; // Critical
+        if (waterLevel > 3.0) return '#F59E0B'; // Warning
+        return '#10B981'; // Safe
+    };
 
-            const existingScript = document.getElementById('google-maps-script');
-            if (existingScript) {
-                existingScript.addEventListener('load', initMap);
-                return;
-            }
-
-            const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-            if (!apiKey) {
-                console.error("Google Maps API Key is missing! Check .env file.");
-                return;
-            }
-
-            const script = document.createElement('script');
-            script.id = 'google-maps-script';
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&language=uz&region=UZ`;
-            script.async = true;
-            script.defer = true;
-            script.onload = () => initMap();
-            script.onerror = () => console.error("Error loading Google Maps script");
-
-            document.body.appendChild(script);
-        };
-
-        loadGoogleMapsScript();
-    }, [initMap]);
-
-    /* Update marker styles when selection changes */
-    useEffect(() => {
-        if (!mapInstanceRef.current || !window.google) return;
-        markersRef.current.forEach((marker, i) => {
-            const station = stations[i];
-            if (!station) return;
-            const color = getMarkerColor(station.station_id, selectedStation, waterLevel);
-            const isSelected = station.station_id === selectedStation;
-            marker.setIcon({
-                path: window.google.maps.SymbolPath.CIRCLE,
-                scale: isSelected ? 12 : 8,
-                fillColor: color,
-                fillOpacity: 1,
-                strokeColor: '#FFFFFF',
-                strokeWeight: isSelected ? 2.5 : 1.5,
-            });
-            marker.setAnimation(isSelected ? window.google.maps.Animation.BOUNCE : null);
-            marker.setZIndex(isSelected ? 100 : 1);
-
-            // Pan to selected station
-            if (isSelected && station.latitude && station.longitude) {
-                mapInstanceRef.current.panTo({ lat: station.latitude, lng: station.longitude });
-                mapInstanceRef.current.setZoom(10);
-            }
-        });
-    }, [selectedStation, waterLevel, stations]);
+    const getStatusText = (wl?: number) => {
+        if (!wl) return '🟢 Xavfsiz';
+        if (wl > 4.0) return '🔴 Kritik';
+        if (wl > 3.0) return '🟡 Diqqat';
+        return '🟢 Xavfsiz';
+    };
 
     return (
-        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-            <div ref={mapRef} style={{ width: '100%', height: '100%', minHeight: '520px' }} />
+        <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '520px', background: '#0A1628' }}>
+            <MapContainer
+                center={mapCenter}
+                zoom={zoomLevel}
+                style={{ width: '100%', height: '100%', borderRadius: '12px' }}
+                zoomControl={false}
+            >
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                <MapUpdater center={mapCenter} zoom={zoomLevel} />
+
+                {stations.map(station => {
+                    if (!station.latitude || !station.longitude) return null;
+                    const isSelected = station.station_id === selectedStation;
+                    const color = getStatusColor(station.station_id);
+
+                    return (
+                        <Marker
+                            key={station.station_id}
+                            position={[station.latitude, station.longitude]}
+                            icon={createCustomIcon(color, isSelected)}
+                            eventHandlers={{
+                                click: () => onStationSelect(station.station_id),
+                            }}
+                        >
+                            <Popup closeButton={false} autoPan={true} className="custom-popup">
+                                <div style={{
+                                    fontFamily: 'Inter, sans-serif',
+                                    color: '#0F172A',
+                                    padding: '5px',
+                                }}>
+                                    <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0369A1', marginBottom: '4px' }}>
+                                        📍 {station.station_name}
+                                    </div>
+                                    <div style={{ fontSize: '0.85rem', marginBottom: '4px' }}>
+                                        🌊 Daryo: <strong>{station.river_name}</strong>
+                                    </div>
+                                    <div style={{ fontSize: '0.85rem', marginBottom: '8px', color: '#64748B' }}>
+                                        Location: {station.latitude.toFixed(4)}, {station.longitude.toFixed(4)}
+                                    </div>
+                                    {isSelected && waterLevel && (
+                                        <div style={{
+                                            display: 'inline-block',
+                                            padding: '2px 8px',
+                                            borderRadius: '999px',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 700,
+                                            background: color === '#EF4444' ? '#FEE2E2' : color === '#F59E0B' ? '#FEF3C7' : '#D1FAE5',
+                                            color: color === '#EF4444' ? '#991B1B' : color === '#F59E0B' ? '#92400E' : '#065F46',
+                                            border: `1px solid ${color}`
+                                        }}>{getStatusText(waterLevel)}</div>
+                                    )}
+                                </div>
+                            </Popup>
+                        </Marker>
+                    );
+                })}
+            </MapContainer>
+
             {/* Map overlay label */}
             <div style={{
                 position: 'absolute',
@@ -238,12 +157,13 @@ const GMap: React.FC<GoogleMapProps> = ({ stations, selectedStation, onStationSe
                 fontWeight: 600,
                 color: '#CBD5E1',
                 fontFamily: 'Inter, system-ui, sans-serif',
-                zIndex: 10,
+                zIndex: 1000,
                 pointerEvents: 'none',
             }}>
                 🗺️ O'zbekiston Gidropost Tarmog'i — {stations.length} ta stansiya
             </div>
-            {/* Legend — Google Maps style */}
+
+            {/* Legend */}
             <div style={{
                 position: 'absolute',
                 bottom: '2.5rem',
@@ -255,7 +175,7 @@ const GMap: React.FC<GoogleMapProps> = ({ stations, selectedStation, onStationSe
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '0.5rem',
-                zIndex: 10,
+                zIndex: 1000,
                 boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
                 fontFamily: 'Inter, system-ui, sans-serif',
             }}>
@@ -266,9 +186,7 @@ const GMap: React.FC<GoogleMapProps> = ({ stations, selectedStation, onStationSe
                     { color: '#EF4444', label: 'Kritik   (> 4m)' },
                 ].map(({ color, label }) => (
                     <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                        <svg width="14" height="14" viewBox="0 0 14 14">
-                            <circle cx="7" cy="7" r="6" fill={color} stroke="#FFFFFF" strokeWidth="1.5" />
-                        </svg>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: color, border: '2px solid #FFF' }}></div>
                         <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#FFFFFF', whiteSpace: 'nowrap' }}>{label}</span>
                     </div>
                 ))}
