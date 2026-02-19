@@ -23,8 +23,8 @@ app.add_middleware(
         "http://localhost:8000"
     ],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/")
@@ -77,6 +77,46 @@ def get_network(river_name: str):
             {"source": "z1", "target": "z2"},
             {"source": "z2", "target": "z3"}
         ]
+    }
+
+@app.post("/api/predictions/forecast")
+def get_forecast(data: dict):
+    """
+    Returns mock forecast data for visualization.
+    Accepts any JSON body.
+    """
+    import random
+    from datetime import datetime, timedelta
+
+    # Generate mock time series
+    history = []
+    forecast = []
+    start_date = datetime.now() - timedelta(days=30)
+
+    # 30 days of history
+    for i in range(30):
+        date = (start_date + timedelta(days=i)).strftime("%Y-%m-%d")
+        val_h = 2.0 + (i * 0.05) + (random.random() * 0.5)
+        val_q = 120 + (i * 2) + (random.random() * 10)
+        history.append({"date": date, "H": round(val_h, 2), "Q": int(val_q), "type": "history"})
+
+    # 7 days of forecast
+    for i in range(7):
+        date = (start_date + timedelta(days=30+i)).strftime("%Y-%m-%d")
+        val_h = 3.5 + (random.random() * 0.5)
+        val_q = 180 + (random.random() * 10)
+        forecast.append({"date": date, "H": round(val_h, 2), "Q": int(val_q), "type": "forecast"})
+
+    return {
+        "status": "success",
+        "model": "Hybrid-Wavelet-BiLSTM",
+        "metrics": {
+            "NSE": 0.92,
+            "RMSE": 0.045,
+            "MAE": 0.032,
+            "R2": 0.94
+        },
+        "data": history + forecast
     }
 
 # No lifespan, no database, no imports - just works
