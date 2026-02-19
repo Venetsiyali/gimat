@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Line,
+    Area,
     XAxis,
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
-    Area,
-    ComposedChart
+    ComposedChart,
+    Line
 } from 'recharts';
 
-// Types
+// --- Types ---
 interface PredictionData {
     date: string;
     H: number; // Suv sathi
@@ -27,22 +27,22 @@ interface Metrics {
     R2: number;
 }
 
+// --- Component ---
 const Predictions: React.FC = () => {
-    // --- State ---
+    // State
     const [selectedStation, setSelectedStation] = useState<string>('chirchiq_post_1');
     const [selectedModel, setSelectedModel] = useState<string>('Wavelet-BiLSTM');
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<PredictionData[]>([]);
     const [metrics, setMetrics] = useState<Metrics | null>(null);
 
-    // --- Config ---
+    // Config
     const API_URL = 'https://gimat-production.up.railway.app/api/predictions/forecast';
 
-    // --- Actions ---
+    // Fetch Data
     const handleGenerate = async () => {
         setLoading(true);
         try {
-            // Using direct axios call as requested to specific endpoint
             const response = await axios.post(API_URL, {
                 station_id: selectedStation,
                 model: selectedModel
@@ -54,15 +54,13 @@ const Predictions: React.FC = () => {
             }
         } catch (error) {
             console.error("Prediction Error:", error);
-            // Fallback for demo if API fails (ensure UI still looks good)
-            generateMockData();
+            generateMockData(); // Fallback
         } finally {
             setLoading(false);
         }
     };
 
     const generateMockData = () => {
-        // Fallback mock data generator if backend is not reachable yet
         const mockData: PredictionData[] = [];
         const today = new Date();
         for (let i = 30; i > 0; i--) {
@@ -89,24 +87,24 @@ const Predictions: React.FC = () => {
         setMetrics({ NSE: 0.94, RMSE: 0.032, MAE: 0.021, R2: 0.96 });
     };
 
-    // Load initial data
     useEffect(() => {
         handleGenerate();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // --- Renders ---
-
     // Custom Tooltip
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
-                <div className="bg-slate-900 border border-slate-700 p-3 rounded shadow-xl bg-opacity-95 backdrop-blur-sm">
-                    <p className="text-slate-300 text-xs mb-2 font-mono">{label}</p>
+                <div className="bg-slate-900/90 border border-slate-700 p-4 rounded-xl shadow-2xl backdrop-blur-md">
+                    <p className="text-slate-400 text-xs mb-2 font-mono uppercase tracking-wider">{label}</p>
                     {payload.map((p: any, idx: number) => (
-                        <p key={idx} style={{ color: p.color }} className="text-sm font-bold font-mono">
-                            {p.name}: {p.value.toFixed(2)}
-                        </p>
+                        <div key={idx} className="flex items-center gap-2 mb-1">
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }}></div>
+                            <span className="text-slate-200 text-sm font-bold font-mono">
+                                {p.name}: <span style={{ color: p.color }}>{p.value.toFixed(2)}</span>
+                            </span>
+                        </div>
                     ))}
                 </div>
             );
@@ -115,224 +113,248 @@ const Predictions: React.FC = () => {
     };
 
     return (
-        <div className="flex h-[calc(100vh-64px)] bg-slate-950 text-slate-200 font-sans overflow-hidden">
+        <div className="flex h-[calc(100vh-64px)] bg-[#0f172a] text-slate-200 font-sans overflow-hidden">
 
-            {/* --- LEFT SIDEBAR (CONFIG) --- */}
-            <div className="w-72 bg-slate-900 border-r border-slate-800 flex flex-col z-20 shadow-2xl">
-                <div className="p-6 border-b border-slate-800 bg-slate-900/50">
-                    <h2 className="text-xl font-bold text-cyan-400 flex items-center gap-2">
-                        <span className="animate-pulse">⚡</span> AI Prognoz
+            {/* --- SIDEBAR --- */}
+            <div className="w-80 bg-slate-900/50 border-r border-slate-800 flex flex-col z-20 backdrop-blur-sm">
+                <div className="p-6 border-b border-slate-800">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-sky-400 to-teal-400 bg-clip-text text-transparent flex items-center gap-3">
+                        <span>🌊</span> AI Prognoz
                     </h2>
-                    <p className="text-xs text-slate-500 mt-1">Gidrologik modellashtirish</p>
+                    <p className="text-xs text-slate-500 mt-2 font-medium tracking-wide">GIDROLOGIK MONITORING TIZIMI</p>
                 </div>
 
-                <div className="p-6 flex-1 space-y-6">
-                    {/* Station Select */}
-                    <div>
-                        <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block">
+                <div className="p-6 flex-1 space-y-8 overflow-y-auto">
+                    {/* Station Selector */}
+                    <div className="space-y-3">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span className="w-1 h-1 rounded-full bg-sky-500"></span>
                             Gidropost
                         </label>
-                        <select
-                            className="w-full bg-slate-800 border border-slate-700 text-slate-200 text-sm rounded-lg p-3 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all shadow-inner"
-                            value={selectedStation}
-                            onChange={(e) => setSelectedStation(e.target.value)}
-                        >
-                            <option value="chirchiq_post_1">Chirchiq - G'azalkent</option>
-                            <option value="chirchiq_post_2">Chirchiq - Oqtepa</option>
-                            <option value="zarafshon_post_1">Zarafshon - Ravotxo'ja</option>
-                        </select>
+                        <div className="relative group">
+                            <select
+                                className="w-full bg-slate-800/80 border border-slate-700 text-slate-200 text-sm rounded-xl p-4 appearance-none focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all cursor-pointer hover:bg-slate-800"
+                                value={selectedStation}
+                                onChange={(e) => setSelectedStation(e.target.value)}
+                            >
+                                <option value="chirchiq_post_1">Chirchiq - G'azalkent</option>
+                                <option value="chirchiq_post_2">Chirchiq - Oqtepa</option>
+                                <option value="zarafshon_post_1">Zarafshon - Ravotxo'ja</option>
+                            </select>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 group-hover:text-sky-400 transition-colors">
+                                ▼
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Model Select */}
-                    <div>
-                        <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block">
+                    {/* Model Selector (Button Group) */}
+                    <div className="space-y-3">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <span className="w-1 h-1 rounded-full bg-teal-400"></span>
                             AI Model
                         </label>
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-2">
                             {['Wavelet-BiLSTM', 'GNN-LSTM', 'SARIMA'].map((model) => (
-                                <button
+                                <motion.button
                                     key={model}
                                     onClick={() => setSelectedModel(model)}
-                                    className={`w-full text-left px-4 py-3 rounded-lg text-sm transition-all border relative overflow-hidden group ${selectedModel === model
-                                            ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)]'
-                                            : 'bg-slate-800 border-slate-700 text-slate-400 hover:bg-slate-700 hover:border-slate-600'
+                                    whileHover={{ scale: 1.02, x: 4 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    className={`relative w-full text-left px-5 py-4 rounded-xl text-sm transition-all border overflow-hidden ${selectedModel === model
+                                            ? 'border-sky-500/50 shadow-[0_0_20px_rgba(14,165,233,0.15)]'
+                                            : 'bg-slate-800/40 border-slate-700/50 text-slate-400 hover:bg-slate-800 hover:border-slate-600'
                                         }`}
                                 >
-                                    <div className="font-semibold relative z-10">{model}</div>
-                                    <div className="text-[10px] opacity-70 mt-1 relative z-10">
-                                        {model === 'Wavelet-BiLSTM' ? 'Vaqt qatorlari uchun' :
-                                            model === 'GNN-LSTM' ? 'Fazoviy-vaqtinchalik' : 'Klassik statistika'}
+                                    {selectedModel === model && (
+                                        <motion.div
+                                            layoutId="activeModel"
+                                            className="absolute inset-0 bg-sky-500/10 z-0"
+                                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                        />
+                                    )}
+                                    <div className="relative z-10 flex justify-between items-center">
+                                        <span className={`font-bold ${selectedModel === model ? 'text-sky-400' : 'text-slate-300'}`}>
+                                            {model}
+                                        </span>
+                                        {selectedModel === model && (
+                                            <motion.span
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                className="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(14,165,233,0.8)]"
+                                            />
+                                        )}
                                     </div>
-                                    {selectedModel === model && <div className="absolute inset-0 bg-cyan-500/5 z-0"></div>}
-                                </button>
+                                    <div className="relative z-10 text-[10px] opacity-60 mt-1 font-medium">
+                                        {model === 'Wavelet-BiLSTM' ? 'Time-Series & Wavelet' :
+                                            model === 'GNN-LSTM' ? 'Graph Neural Network' : 'Statistical Model'}
+                                    </div>
+                                </motion.button>
                             ))}
                         </div>
                     </div>
                 </div>
 
-                <div className="p-6 border-t border-slate-800 bg-slate-900/50">
-                    <button
+                <div className="p-6 border-t border-slate-800 bg-slate-900/80 backdrop-blur-md">
+                    <motion.button
                         onClick={handleGenerate}
                         disabled={loading}
-                        className={`w-full py-3 rounded-lg font-bold text-center transition-all transform active:scale-95 ${loading
-                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40'
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full py-4 rounded-xl font-bold text-center tracking-wide transition-all ${loading
+                                ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                                : 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg shadow-sky-500/25 hover:shadow-sky-500/40 border border-t-sky-400/20'
                             }`}
                     >
                         {loading ? (
-                            <div className="flex items-center justify-center gap-2">
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                <span>Hisoblanmoqda...</span>
+                            <div className="flex items-center justify-center gap-3">
+                                <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                    className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                                />
+                                <span>KUTING...</span>
                             </div>
-                        ) : 'Prognozlash'}
-                    </button>
+                        ) : 'HISOBLASH'}
+                    </motion.button>
                 </div>
             </div>
 
-            {/* --- MAIN CONTENT --- */}
-            <div className="flex-1 flex flex-col relative overflow-y-auto bg-[url('/grid.svg')]">
-                <div className="flex-1 p-8">
-                    {/* Header */}
-                    <div className="flex justify-between items-end mb-8">
+            {/* --- MAIN AREA --- */}
+            <div className="flex-1 flex flex-col relative overflow-y-auto bg-[url('/grid.svg')] bg-fixed">
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 via-slate-900/80 to-slate-900 pointer-events-none" />
+
+                <div className="relative z-10 flex-1 p-8 lg:p-12 max-w-7xl mx-auto w-full flex flex-col">
+
+                    {/* Header Strip */}
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-10 pb-6 border-b border-slate-800/60">
                         <div>
-                            <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Suv Resurslari Prognozi</h1>
-                            <div className="flex items-center gap-4 text-sm text-slate-400">
-                                <span className="flex items-center gap-2 bg-slate-900/50 px-3 py-1 rounded-full border border-slate-800">
-                                    <div className="w-2 h-2 rounded-full bg-slate-500"></div>
-                                    Haqiqiy ma'lumot (History)
-                                </span>
-                                <span className="flex items-center gap-2 bg-slate-900/50 px-3 py-1 rounded-full border border-slate-800">
-                                    <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]"></div>
-                                    Bashorat (Forecast)
-                                </span>
-                            </div>
-                        </div>
-                        {metrics && (
-                            <div className="flex gap-4">
-                                <ScoreCard label="NSE" value={metrics.NSE} color="text-cyan-400" />
-                                <ScoreCard label="RMSE" value={metrics.RMSE} color="text-rose-400" />
-                                <ScoreCard label="MAE" value={metrics.MAE} color="text-yellow-400" />
-                                <ScoreCard label="R²" value={metrics.R2} color="text-emerald-400" />
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Chart Container */}
-                    <div className="w-full h-[500px] bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-2xl relative backdrop-blur-sm">
-
-                        {loading && (
-                            <div className="absolute inset-0 z-10 bg-slate-950/80 flex items-center justify-center rounded-2xl backdrop-blur-sm transition-all">
-                                <div className="flex flex-col items-center gap-4">
-                                    <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin shadow-[0_0_15px_rgba(34,211,238,0.3)]"></div>
-                                    <p className="text-cyan-400 font-mono text-sm animate-pulse tracking-widest">AI MODEL ISHLAMOQDA...</p>
+                            <h1 className="text-4xl font-black text-white mb-3 tracking-tight drop-shadow-lg">
+                                Suv Sathi Prognozi
+                            </h1>
+                            <div className="flex items-center gap-6 text-sm font-medium">
+                                <div className="flex items-center gap-2 text-slate-400">
+                                    <span className="w-2 h-2 rounded-full bg-slate-500"></span> History
+                                </div>
+                                <div className="flex items-center gap-2 text-sky-400">
+                                    <span className="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_10px_rgba(14,165,233,0.5)] animate-pulse"></span> AI Forecast
                                 </div>
                             </div>
-                        )}
-
-                        <ResponsiveContainer width="100%" height="100%">
-                            <ComposedChart data={data}>
-                                <defs>
-                                    <linearGradient id="colorQ" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#22D3EE" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#22D3EE" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
-                                <XAxis
-                                    dataKey="date"
-                                    stroke="#475569"
-                                    tick={{ fill: '#94A3B8', fontSize: 12 }}
-                                    tickLine={false}
-                                    axisLine={{ stroke: '#334155' }}
-                                    dy={10}
-                                />
-                                <YAxis
-                                    yAxisId="left"
-                                    stroke="#475569"
-                                    tick={{ fill: '#94A3B8', fontSize: 12 }}
-                                    tickLine={false}
-                                    axisLine={{ stroke: '#334155' }}
-                                    label={{ value: 'Suv Sarfi (m³/s)', angle: -90, position: 'insideLeft', fill: '#94A3B8', style: { textAnchor: 'middle' } }}
-                                />
-                                <YAxis
-                                    yAxisId="right"
-                                    orientation="right"
-                                    stroke="#475569"
-                                    tick={{ fill: '#94A3B8', fontSize: 12 }}
-                                    tickLine={false}
-                                    axisLine={false}
-                                    label={{ value: 'Suv Sathi (m)', angle: 90, position: 'insideRight', fill: '#94A3B8', style: { textAnchor: 'middle' } }}
-                                />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend wrapperStyle={{ paddingTop: '20px' }} />
-
-                                {/* Historical Flow Area */}
-                                <Area
-                                    yAxisId="left"
-                                    type="monotone"
-                                    dataKey="Q"
-                                    stroke="#22D3EE"
-                                    fillOpacity={1}
-                                    fill="url(#colorQ)"
-                                    name="Suv Sarfi (Q)"
-                                    connectNulls
-                                    strokeWidth={2}
-                                />
-
-                                {/* Water Level Line */}
-                                <Line
-                                    yAxisId="right"
-                                    type="monotone"
-                                    dataKey="H"
-                                    stroke="#F43F5E"
-                                    strokeWidth={3}
-                                    dot={false}
-                                    name="Suv Sathi (H)"
-                                    connectNulls
-                                    className="filter drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]"
-                                />
-                            </ComposedChart>
-                        </ResponsiveContainer>
+                        </div>
+                        {metrics && <StatsWidget metrics={metrics} />}
                     </div>
 
-                    {/* Bottom Info */}
-                    <div className="grid grid-cols-2 gap-6 mt-6">
-                        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all">
-                            <h4 className="text-md font-bold text-white mb-3 flex items-center gap-2">
-                                <span className="text-cyan-400">⚡</span> Model Tahlili
-                            </h4>
-                            <p className="text-sm text-slate-400 leading-relaxed">
-                                Tanlangan <strong className="text-slate-200">{selectedModel}</strong> modeli so'nggi 30 kunlik ma'lumotlar asosida kelgusi 7 kun uchun prognozni generatsiya qildi.
-                                NSE koeffitsienti <strong className="text-cyan-400">{metrics?.NSE || '0.94'}</strong> ga teng bo'lib, bu yuqori aniqlikni anglatadi.
-                            </p>
+                    {/* Chart Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="flex-1 min-h-[500px] w-full bg-slate-800/30 border border-slate-700/50 rounded-3xl p-1 shadow-2xl backdrop-blur-xl relative overflow-hidden group"
+                    >
+                        {/* Glass Shine Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl pointer-events-none" />
+
+                        <div className="absolute inset-0 flex flex-col p-6 sm:p-8">
+                            {loading && (
+                                <div className="absolute inset-0 z-20 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center rounded-3xl transition-all">
+                                    <div className="flex flex-col items-center gap-6">
+                                        <div className="relative">
+                                            <div className="w-20 h-20 border-4 border-slate-700 rounded-full"></div>
+                                            <div className="w-20 h-20 border-4 border-sky-500 rounded-full border-t-transparent animate-spin absolute top-0 left-0 shadow-[0_0_20px_rgba(14,165,233,0.3)]"></div>
+                                        </div>
+                                        <p className="text-sky-400 font-mono text-sm tracking-[0.2em] animate-pulse">AI PROCESSING</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            <ResponsiveContainer width="100%" height="100%">
+                                <ComposedChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 10 }}>
+                                    <defs>
+                                        <linearGradient id="colorQ" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.4} />
+                                            <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                                    <XAxis
+                                        dataKey="date"
+                                        stroke="#475569"
+                                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 500 }}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        dy={15}
+                                    />
+                                    <YAxis
+                                        yAxisId="left"
+                                        stroke="#475569"
+                                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 500 }}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickFormatter={(value) => `${value} m³`}
+                                        label={{ value: 'Sarfi (Q)', angle: -90, position: 'insideLeft', fill: '#64748b', style: { textAnchor: 'middle' } }}
+                                    />
+                                    <YAxis
+                                        yAxisId="right"
+                                        orientation="right"
+                                        stroke="#475569"
+                                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 500 }}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickFormatter={(value) => `${value} m`}
+                                        label={{ value: 'Sathi (H)', angle: 90, position: 'insideRight', fill: '#64748b', style: { textAnchor: 'middle' } }}
+                                    />
+                                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#334155', strokeWidth: 1, strokeDasharray: '4 4' }} />
+
+                                    <Area
+                                        yAxisId="left"
+                                        type="monotone"
+                                        dataKey="Q"
+                                        stroke="#0ea5e9"
+                                        strokeWidth={3}
+                                        fillOpacity={1}
+                                        fill="url(#colorQ)"
+                                        name="Suv Sarfi (Q)"
+                                        filter="url(#shadow)"
+                                    />
+
+                                    <Line
+                                        yAxisId="right"
+                                        type="monotone"
+                                        dataKey="H"
+                                        stroke="#2dd4bf"
+                                        strokeWidth={3}
+                                        dot={{ r: 4, fill: '#0f172a', stroke: '#2dd4bf', strokeWidth: 2 }}
+                                        activeDot={{ r: 6, fill: '#2dd4bf', stroke: '#fff' }}
+                                        name="Suv Sathi (H)"
+                                    />
+                                </ComposedChart>
+                            </ResponsiveContainer>
                         </div>
-                        <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:bg-slate-900/80 transition-all">
-                            <h4 className="text-md font-bold text-white mb-3 flex items-center gap-2">
-                                <span className="text-emerald-400">💡</span> Tavsiyalar
-                            </h4>
-                            <ul className="text-sm text-slate-400 space-y-2">
-                                <li className="flex items-start gap-2">
-                                    <span className="text-emerald-500 mt-1">•</span>
-                                    Suv sarfi kutilayotgan me'yordan <strong className="text-slate-200">12%</strong> yuqori.
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <span className="text-emerald-500 mt-1">•</span>
-                                    To'g'on shlyuzlarini <strong className="text-slate-200">3-bosqich</strong> rejimiga o'tkazish tavsiya etiladi.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </div>
     );
 };
 
-// Sub-component for Score Cards
-const ScoreCard = ({ label, value, color }: { label: string, value: number, color: string }) => (
-    <div className="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl px-5 py-4 flex flex-col items-center min-w-[120px] shadow-lg hover:shadow-cyan-500/10 hover:border-slate-700 transition-all duration-300 group">
-        <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest text-center group-hover:text-slate-400 transition-colors">{label}</span>
-        <span className={`text-3xl font-black font-mono mt-1 ${color} filter drop-shadow-md`}>{value?.toFixed(3)}</span>
+// --- Sub-Components ---
+const StatsWidget = ({ metrics }: { metrics: Metrics }) => {
+    return (
+        <div className="flex gap-4">
+            <StatCard label="NSE" value={metrics.NSE} color="text-teal-400" icon="🎯" />
+            <StatCard label="RMSE" value={metrics.RMSE} color="text-rose-400" icon="📉" />
+            <div className="w-px bg-slate-800 mx-2 hidden md:block"></div>
+            <StatCard label="R²" value={metrics.R2} color="text-sky-400" icon="📊" />
+        </div>
+    );
+};
+
+const StatCard = ({ label, value, color, icon }: { label: string, value: number, color: string, icon: string }) => (
+    <div className="flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 px-5 py-3 rounded-2xl backdrop-blur-sm hover:bg-slate-800/60 transition-colors">
+        <span className="text-xl filter grayscale opacity-70">{icon}</span>
+        <div>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{label}</p>
+            <p className={`text-xl font-bold font-mono ${color}`}>{value.toFixed(3)}</p>
+        </div>
     </div>
 );
 
