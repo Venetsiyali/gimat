@@ -18,13 +18,13 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://gimat.vercel.app",
+        "https://gimat-production.up.railway.app",
         "http://localhost:3000",
-        "https://gimat-frontend.vercel.app",
         "http://localhost:8000"
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
 )
 
 @app.get("/")

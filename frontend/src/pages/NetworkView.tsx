@@ -243,7 +243,7 @@ const NetworkView: React.FC = () => {
             </div>
 
             {/* --- RIGHT MAIN AREA (75%) --- */}
-            <div className="w-3/4 h-full relative bg-slate-950">
+            <div className="w-3/4 h-full relative bg-slate-950 flex flex-col">
                 {/* Map overlay header */}
                 <div className="absolute top-4 left-4 z-10">
                     <h1 className="text-2xl font-bold text-white tracking-tight">
@@ -277,30 +277,32 @@ const NetworkView: React.FC = () => {
                         </div>
                     </div>
                 ) : !selectedRiver ? (
-                    <div className="flex items-center justify-center h-full text-slate-500">
+                    <div className="flex-1 flex items-center justify-center text-slate-500">
                         <div className="text-center">
                             <h3 className="text-xl font-medium text-slate-400 mb-2">Daryo tanlanmagan</h3>
                             <p className="text-sm">Iltimos, chap paneldan daryo havzasini tanlang.</p>
                         </div>
                     </div>
                 ) : (
-                    <ReactFlow
-                        nodes={nodes}
-                        edges={edges}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onNodeClick={onNodeClick}
-                        connectionLineType={ConnectionLineType.SmoothStep}
-                        fitView
-                        attributionPosition="bottom-right"
-                        nodesDraggable={false}
-                    >
-                        <Controls
-                            style={{ background: '#1E293B', border: '1px solid #334155', fill: '#CBD5E1' }}
-                            showInteractive={false}
-                        />
-                        <Background color="#1E293B" gap={20} size={1} />
-                    </ReactFlow>
+                    <div className="flex-1 w-full h-full">
+                        <ReactFlow
+                            nodes={nodes}
+                            edges={edges}
+                            onNodesChange={onNodesChange}
+                            onEdgesChange={onEdgesChange}
+                            onNodeClick={onNodeClick}
+                            connectionLineType={ConnectionLineType.SmoothStep}
+                            fitView
+                            attributionPosition="bottom-right"
+                            nodesDraggable={false}
+                        >
+                            <Controls
+                                style={{ background: '#1E293B', border: '1px solid #334155', fill: '#CBD5E1' }}
+                                showInteractive={false}
+                            />
+                            <Background color="#1E293B" gap={20} size={1} />
+                        </ReactFlow>
+                    </div>
                 )}
             </div>
         </div>
