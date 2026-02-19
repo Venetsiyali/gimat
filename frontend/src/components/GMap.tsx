@@ -161,16 +161,38 @@ const GMap: React.FC<GoogleMapProps> = ({ stations, selectedStation, onStationSe
         }
     }, [stations, selectedStation, waterLevel, onStationSelect]);
 
-    /* Initialize map when Google Maps script is ready */
+    /* Load Google Maps Script Dynamically */
     useEffect(() => {
-        const tryInit = () => {
+        const loadGoogleMapsScript = () => {
             if (window.google && window.google.maps) {
                 initMap();
-            } else {
-                setTimeout(tryInit, 200);
+                return;
             }
+
+            const existingScript = document.getElementById('google-maps-script');
+            if (existingScript) {
+                existingScript.addEventListener('load', initMap);
+                return;
+            }
+
+            const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+            if (!apiKey) {
+                console.error("Google Maps API Key is missing! Check .env file.");
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.id = 'google-maps-script';
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&language=uz&region=UZ`;
+            script.async = true;
+            script.defer = true;
+            script.onload = () => initMap();
+            script.onerror = () => console.error("Error loading Google Maps script");
+
+            document.body.appendChild(script);
         };
-        tryInit();
+
+        loadGoogleMapsScript();
     }, [initMap]);
 
     /* Update marker styles when selection changes */

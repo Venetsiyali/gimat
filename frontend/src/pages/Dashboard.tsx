@@ -64,14 +64,16 @@ const Dashboard: React.FC = () => {
 
     const loadStations = async () => {
         try {
+            console.log('Loading stations from:', dataAPI.getStations);
             const response = await dataAPI.getStations();
             setStations(response.data);
             if (response.data.length > 0) {
                 setSelectedStation(response.data[0].station_id);
             }
             setLoading(false);
-        } catch (error) {
-            console.error('Error loading stations:', error);
+        } catch (error: any) {
+            console.error('Error loading stations:', error.message);
+            if (error.config?.url) console.error('Failed URL:', error.config.url);
             setLoading(false);
         }
     };
@@ -80,8 +82,9 @@ const Dashboard: React.FC = () => {
         try {
             const response = await dataAPI.getLatestObservation(selectedStation);
             setLatestData(response.data);
-        } catch (error) {
-            console.error('Error loading latest data:', error);
+        } catch (error: any) {
+            console.error('Error loading latest data:', error.message);
+            if (error.config?.url) console.error('Failed URL:', error.config.url);
         }
     };
 
@@ -89,8 +92,9 @@ const Dashboard: React.FC = () => {
         try {
             const response = await dataAPI.getStatistics(selectedStation);
             setStats(response.data);
-        } catch (error) {
-            console.error('Error loading statistics:', error);
+        } catch (error: any) {
+            console.error('Error loading statistics:', error.message);
+            if (error.config?.url) console.error('Failed URL:', error.config.url);
         }
     };
 
@@ -104,8 +108,8 @@ const Dashboard: React.FC = () => {
                 temperature: 18 + Math.sin(i / 10) * 5 + Math.random() * 2,
             }));
             setHistoricalData(mockData);
-        } catch (error) {
-            console.error('Error loading historical data:', error);
+        } catch (error: any) {
+            console.error('Error loading historical data:', error.message);
         }
     };
 
